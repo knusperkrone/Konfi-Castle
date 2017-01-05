@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="@string/vibrate_key"
+        android:summary="@string/vibrate_summary"
+        android:title="@string/vibrate_title" />
+
+    <ListPreference
+        android:defaultValue="5"
+        android:entries="@array/notification_time_values"
+        android:entryValues="@array/notification_time_values"
+        android:key="@string/notification_time_key"
+        android:summary="@string/notification_time_summary"
+        android:title="@string/notification_time_title" />
+
+
+    <MultiSelectListPreference
+        android:defaultValue="@array/notification_values"
+        android:entries="@array/notification_entries"
+        android:entryValues="@array/notification_values"
+        android:key="@string/notification_key"
+        android:summary="@string/event_summary"
+        android:title="@string/event_title" />
+
+    <ListPreference
+        android:defaultValue="1"
+        android:entries="@array/castle_entries"
+        android:entryValues="@array/castle_values"
+        android:key="@string/instanz_key"
+        android:summary="@string/notification_summary"
+        android:title="@string/notification_title" />
+
+    <Preference
+        android:key="@string/help_key"
+        android:summary="@string/help_summary"
+        android:title="@string/help_title" />
+
+</PreferenceScreen>

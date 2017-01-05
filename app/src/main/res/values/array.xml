@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="notification_entries" translatable="false">
+        <item>Aufbau</item>
+        <item>Essen</item>
+        <item>Normales Programm</item>
+        <item>Freiwilliges Programm</item>
+        <item>Mitarbeiter Programm</item>
+    </string-array>
+
+    <string-array name="notification_values" translatable="false">
+        <item>aufbau</item>
+        <item>essen</item>
+        <item>programm</item>
+        <item>freiwillig</item>
+        <item>ma</item>
+    </string-array>
+
+
+    <string-array name="notification_time_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>15</item>
+    </string-array>
+
+
+    <string-array name="castle_entries" translatable="false">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>ÖC</item>
+    </string-array>
+
+    <string-array name="castle_values" translatable="false">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+    </string-array>
+
+
+    <string-array name="abendgebet_titles1" translatable="false">
+        <item>Stille/Zeit zum Nachdenken</item>
+        <item>Gemeinsames Gebet</item>
+        <item>Impuls/ Zeit zum Zuhören</item>
+        <item>Wechselgebet</item>
+        <item>Segen</item>
+    </string-array>
+
+    <string-array name="abendgebet_values1" translatable="false">
+        <item>xxxWas hat mich gefreut? Was hat mich zum nachdenken gebracht? Was habe ich heute erlebt? Wonach suche ich in meinem Leben?</item>
+        <item>xxxLieber Gott,\nam Ende dieses Tags möchte ich dir Danke sagen. Ich nehme mir jetzt Zeit, um dir mein Herz zu öffnen und jeden Tag mit dir abzuschließen. Danke, für die wertvolle gemeinsame Zeit, für die guten Worte über dich und die guten Erlebnisse, die mir in Erinnerung bleiben. In deinem Wort sagst du:\nWer mich sucht, wird mich finden. Hilft mir dich zu suchen. Danke, dass ich deinem Versprechen vertrauen kann.\nAmen</item>
+        <item>xxxEinfach Zuhören.</item>
+        <item>xxx <i>Alle:</i>\nVater, ich suche dich, weil du mir helfen kannst.\nDu lässt dich finden und bleibst bei mir.\n
+<i>Einer:</i>\nJesus, an manchen Tagen habe ich das Gefühl, dass andere mich verletzten. Ihre Worte und Taten tun mir weh. Zeige du mir Wege, wie ich damit umgehen kann und gehe ihn mit mir.\n\n
+
+<i>Alle:</i>\nVater, ich suche dich, weil du mir helfen kannst.\nDu lässt dich finden und bleibst bei mir.\n
+<i>Einer:</i>\nHerr, manchmal tue ich Dinge nur um anderen zu gefallen. Ich verstelle mich, um Anerkennung zu bekommen. Doch in diesen Momenten kann ich nicht ich selber sein. Hir mir zu verstehen, dass du mich so liebst wich ich bin.\n\n
+
+<i>Alle:</i>\nVater, ich suche dich, weil du mir helfen kannst.\nDu lässt dich finden und bleibst bei mir.\n
+<i>Einer:</i>\nJesus, of habe ich das Gefühl unter großen Druck zu stehen. Mit wird alles zu viel und ich sehne mich nach Freiheit. In diesen Zeiten weiß ich nicht wohin und fühle mich einsam. Steh du mir zur Seite und gib mir Kraft.\n\n
+
+<i>Alle:</i>\nVater, ich suche dich, weil du mir helfen kannst.\nDu lässt dich finden und bleibst bei mir.\n
+<i>Einer:</i>\nHerr, ich wünsche mir dich zu finden. Ich weiß nicht immer so genau, wo man dich suchen kann. In deiesen Situationen komme ich mir allein gelassen vor.\nHilf mir bitte bei meiner Suche.\n\n
+
+<i>Alle:</i>\nVater, ich suche dich, weil du mir helfen kannst.\nDu lässt dich finden und bleibst bei mir.\n</item>
+        <item>Der HERR segne und behüte dich;\nDer HERR lasse sein Angesicht leuchten über dir und sei dir gnädig; der HERR hebe sein Angesicht über dich und gebe dir Frieden.\nAmem</item>
+        <item>xxxDer HERR segne dich und sei dir nahe.\nEr erfülle dir die geheimen Wünsche deiner Herzens. Der HERR mehre Gnade und Weisheit bei dir und beschenke dich mit viel Verständnis.\nDer HERR segne dich heute mit etwas Kostbarem, das du als seine Gabe erkennst, als Antwort auf diesen Segen.\nAmen</item>
+    </string-array>
+
+    <string-array name="abendgebet_liederTitel" translatable="false">
+        <item>Dir gebührt die Ehre</item>
+        <item>Treu</item>
+        <item>Der Tag beginnt, der Tag vergeht</item>
+    </string-array>
+
+    <string-array name="abendgebet_liederText" translatable="false">
+        <item>xxxDir gebührt die Ehre\nund Anbetung\nWir erheben unsre Hände\nWir erheben Deinen Namen\n\nDenn du bist groß\nDu tust Wunder, groß\nNiemand anders ist wie Du\nDu tust Wunder, groß\nNiemand anders ist wie Du</item>
+        <item>xxxDu bleibst an meiner Seite,\ndu schämst dich nicht für mich.\nDu weißt, ich bin untreu\nund denoch gehtst du nicht.\nDu stehst zu unsrer Freundschaft.\nObwohl ich schwierig bin,\nHälst du mir die Treue,\ngehst mir mir durch dick und dünn.\nDu bist treu, Herr an jedem neuen Tag.\nDu bist treu, Herr auch wenn ich versag,\nbist du treu, Herr\nUnerschüttlich hält deine Treue mich, du bleibst mir treu.</item>
+        <item>xxx1. Der Tag begann, der Tag vergeht, vorbei ist seine Zeit.\nWenn gleich der Mond am Himmel steht, ist er Vergangen heit.\n\nChorus :\nDiese Nacht in Gottes Hand legen wir in Gottes Hand, diese Nacht jede Nacht, in Gottes Hand.\n\n2. Wir danken, Herr, für alles Glück, das du uns heut geschenkt.\nJetzt nimmst du diesen Tag zurück, du der die Tage lenkst.\n\n3. Wir danken dir für jedes Wort, das du uns heut Mut gemacht.\nVerzeih uns, wenn wir hier und dort nur an uns selbst gedacht.\n\n4. Wir bitten dich jetzt für die Nacht, daß wir geborgen sind,\nund du auf alles hier gibst Acht, bis neu dein Tag beginnt.</item>
+    </string-array>
+
+    <string-array name="startInDenTag_saTitel" translatable="false">
+        <item>Lukas 7,1-10:\nJesus heilt den Sohn eines Hauptmannes</item>
+        <item>Deine ersten Gedanken beim Lesen des Textes</item>
+        <item>Hintergründe und Informationen für dich</item>
+        <item>Tipps zur Arbeit mit den Konfis</item>
+        <item>Zum Lesen mit den Konfis aus dem Start in den Tag - Heft</item>
+    </string-array>
+
+    <string-array name="startInDenTag_saText" translatable="false">
+        <item>xxx<b><i>1</i> Nachdem Jesus das alles gesagt hatte, ging er wieder nach Kapernaum.
+\n<i>2</i> Dort lebte ein römischer Hauptmann, der einen Diener hatte, den er sehr schätzte. Nun war dieser Diener schwer erkrankt und lag im Sterben.
+\n<i>3</i> Als der Hauptmann von Jesus hörte, schickte er einige angesehene Männer aus dem jüdischen Volk zu ihm und bat ihn, zu kommen und seinen Sklaven zu heilen.
+\n<i>4</i> Diese baten Jesus inständig, mitzukommen und dem Hauptmann zu helfen. »Wenn jemand deine Hilfe verdient, dann er«, sagten sie,
+\n<i>5</i> »denn er liebt die Juden und hat uns sogar die Synagoge gebaut.«
+\n<i>6</i> Da ging Jesus mit ihnen. Doch kurz bevor sie das Haus erreichten, schickte der Hauptmann ihm ein paar Freunde entgegen und ließ ihm ausrichten: »Herr, mach dir nicht die Mühe, in mein Haus zu kommen, denn eine solche Ehre verdiene ich nicht.
+\n<i>7</i> Ich bin nicht einmal würdig genug, selbst zu dir zu kommen. Sprich einfach ein Wort, und mein Diener wird gesund werden.
+\n<i>8</i> Ich weiß das, weil ich dem Befehl von Vorgesetzten unterstehe und auch selbst Soldaten befehlige. Ich brauche nur zu einem von ihnen zu sagen: `Geh  ́, dann geht er, oder: `Komm ́, dann kommt er. Und wenn ich zu meinem Diener sage: `Tu dies ́, dann tut er es.«
+\n<i>9</i> Als Jesus das hörte, staunte er. Er wandte sich zu der Menge und sagte: »Ich sage euch, einen solchen Glauben habe ich in ganz Israel nicht erlebt!«
+\n<i>10</i> Und als die Freunde des Hauptmanns in sein Haus zurückkehrten, fanden sie den Diener gesund.</b>
+\n\n(Übersetzung: Neues Leben)</item>
+        <item>xxxBei KonfiCastle 2017 geht es um Texte aus dem Lukasevangelium. Damit du mit anderen den Text anschauen kannst, ist es wichtig, dass Du als Gesprächsleiter selbst vertraut wirst mit dem Text.
+\nMein Tip: Bevor du weiterliest, bitte Jesus, dass er dir zeigt, was der Text für dich  ganz persönlich bedeutet. Das ist das coole an Gott: Er redet zu uns durch sein Wort, die Bibel. Mir hilft es, vor dem Bibellesen mit ihm zu reden. Vielleicht hilft dir das auch. Dann lies Dir den Text noch mal in Ruhe durch und mache Dir Gedanken zu folgenden Stichworten: (Deine Antworten kannst du gerne zwischen die Zeilen des Bibeltextes schreiben.)
+\n
+\nFragen, die dir zu dem Text kommen.
+\n- Was an dem Text gefällt dir besonders?
+\n- Welches ist für dich der wichtigste Vers, bzw. Satz des Textes? Male ihn fett mit einem Leuchtstift an. Warum ist das der wichtigste Vers?
+\n- Wie erlebst du Jesus in diesem Text? Hast du eine neue Seite an ihm kennengelernt?
+\n- wo und wie fühlst du dich persönlich angesprochen?</item>
+        <item><b>Was davor und danach passiert</b></item>
+        <item>xxxJesus hat gerade vielen Menschen von Gott erzählt (Lk 6,17-49). Dabei ging es vor allem um den Umgang mit dem Nächsten. Gleich danach geht Jesus ins Dorf Kapernaum hinein, wo unsere Geschichte passiert.
+\nIm Anschluss daran wandert Jesus zur Stadt Nain, wo er einen toten Jungen zum Leben erweckt, der gerade beerdigt werden soll. Unsere Begebenheit (wie auch die folgende) unterstreicht also das, was Jesus gerade gesagt hat:
+\nDie Armen und Schwachen habens bei Gott gut, denn er erbarmt sich über sie.</item>
+        <item><b>Vers für Vers Erklärung</b></item>
+        <item>xxxIch lass die Sätze weg und schreib nur die Versnummern hin. Leg den Text einfach daneben, das spart Platz, danke :).
+\n<i>1</i>
+\nJesus hat während seines Lebens grundsätzlich zwei Dinge gemacht: von Gott erzählt und die Menschen geheilt. Mit seinem Leben hat er immer das unterstrichen,
+\nwas er gepredigt hat. Er war absolut „authentisch“, wie man heute sagen würde.
+\nWenn Jesus also nach seiner Rede nach Kapernaum hineinging, dann wollte er wieder zu den Menschen, zu denen Gott ihn geschickt hat.
+\n<i>2 – 3</i>
+\nJesus war bekannt. Vor allem in Galiläa, dem Norden Israels. Es sprach sich herum, dass bei ihm niemand krank wegging, sondern dass alle gesund gemacht wurden. Also schickt der Hauptmann seine Leute los.
+\n<i>4 – 5</i>
+\nDie Römer waren zu der Zeit die Besatzungsmacht in Israel. Im Erobern und Erniedrigen anderer Völker waren sie Weltmeister. Dieser römische Hauptmann aber war offensichtlich anders. Sein Sklave, möglicherweise ein Jude, war ihm wichtig.
+\nSogar die Religion der Juden hat er unterstützt, indem er die Synagoge mitfinanzierte.
+\n<i>6 – 8</i>
+\nAm krassesten war jedoch sein Vertrauen in Jesus. Woher auch immer, er wusste:
+\nJesus hat die absolute Macht! Der Vergleich mit den Befehlen unter Soldaten unterstreicht das. Beim Militär wird jedem Rekruten (Neuling) in einem quälenden Drill der absolute Gehorsam eingeübt. Ohne diesen Gehorsam würde das Militär auch nicht funktionieren. Das war die Welt diese Hauptmanns. Sie bestand aus Rängen, Befehlen und Gehorsam. Und als er von Jesus hörte, muss ihm klar gewesen sein, dass dieser Jesus der Chef über alle Mächte ist – auch über Krankheiten. Ein Wort aus seinem Mund genügt – egal wo! – und sein Befehl wird augenblicklich Wirklichkeit.
+\n<i>9 – 10</i>
+\nUnd so heilt Jesus den Sklaven dieses Soldaten.
+\nAber wenn man genau hinschaut, erscheint es fast als Nebensache. Viel mehr freut sich Jesus über den Glauben dieses Menschen! Da kommt ein „Heide“, also ein Mensch, bei dem zu Hause auf alles Mögliche und Unmögliche vertraut wird, nur nicht auf den wahren Gott, den Gott Israels. Und genau dieser Mann glaubt Jesus, dass er heilen kann und es auch tun wird. Er hat sich nicht getäuscht. Sein Vertrauen – sein Glaube – hat sich gelohnt! Jesus hat seinen Sklaven gesund gemacht.
+\nJetzt dreht sich Jesus um. Zu der Menge, die dabei war und das gerade 1:1 mitgekriegt hat. „Bei euch – sagt er – hab ich so einen Glauben noch nicht erlebt.“
+\nIch finde, das ist eine Frage auch an uns heute. Wem vertrauen wir im Leben? Und wieviel trauen wir Gott zu?</item>
+        <item>Wenn du „Start in den Tag“ moderierst, wäre das hier ein möglicher Ablauf:</item>
+        <item>- Begrüßung, (Kurze „wie geht’s mir“ Runde zum Ankommen)
+\n- Gebet
+\n- Text laut vorlesen lassen oder selbst lesen
+\n- Jeder liest noch einmal still den Text für sich allein
+\n- Gemeinsame Erarbeitung des Textes mit Methoden (siehe unten)
+\n- Fragen klären oder Fragen stellen
+\n- Erklärung aus „Start in den Tag“ lesen
+\n- Gebet (eventuell kurz Gebetsanliegen sammeln; Gebetsgemeinschaft oder eine Zeit der Stille, damit jeder selbst beten kann)</item>
+        <item>Mögliche Methoden zur Texterarbeitung (Bitte nur EINE Methode auswählen)</item>
+        <item><b>Farbe bekennen:</b>
+\nEin tolles Spiel für Start in den Tag und Bibelgespräche!
+\nErhältlich auf www.cvjm-bayern.de/service/farbe-bekennen !</item>
+        <item><b>Bibel teilen:</b>
+\n- Beim stillen Text lesen wählt jeder einen Satz/Satzteil aus, der für ihn besonders ist. (z.B. besonders gefällt, besonders ärgert, besonders wichtig oder auch unverständlich ist...)
+\n- In einer ersten Runde liest jeder UNKOMMENTIERT (von sich selbst und anderen!) seinen Satz.
+\n- In einer zweiten Runde sagt jeder, warum er diesen Satz gewählt hat. Immer noch UNKOMMENTIERT.
+\n- Erst in der dritten Runde wird aufeinander Bezug genommen, z.B. Fragen geklärt, miteinander über gemeinsame Lieblingsstellen gefreut, aufgenommen was ärgert usw. Hier kann auch herausgearbeitet werden: Was ist für uns jetzt und heute wichtig geworden.</item>
+        <item><b>Hör zu – Methode:</b>
+\nEin Freiwilliger liest den Text vor. (Evtl. auch ein Mitarbeiter. Es ist wichtig, dass gut gelesen wird.) Die anderen hören einfach zu. Ist der Text zu Ende gelesen, darf in einer kurzen Pause jeder in Stichpunkten aufschreiben, was er noch weiß. Anschließend versuchen alle zusammen die Geschichte nachzuerzählen. Danach:
+\nText nochmal lesen. Was habt ihr vergessen beim Nacherzählen?
+\nWas habt ihr anders in Erinnerung?</item>
+        <item><b>Szenen nachstellen:</b>
+\n- Material: VIELE Lego- bzw. Playmobilfiguren. (Krame mal in deinen alten Spielzeugkisten.)
+\n- Den Text in Szenen aufteilen.
+\n- Ein bis zwei ausgewählte Szenen mit den Figuren nachstellen. Wer möchte:
+\nMit einem Konfihandy bzw. Foto Szenen festhalten.
+\n- Ins Gespräch kommen: Was gefällt euch an dieser Szene? Wie könnte es danach weiter gehen? (Alternative Geschichten überlegen.)</item>
+        <item><b>Bibel-Puzzle (Text dazu steht unten):</b>
+\nAchtung: Bei dieser Methode anderer Ablauf. Hier NICHT VORHER den Text lesen, er wird hinterher gelesen!!!
+\nBastele dir ein Bibel-Puzzle. Dazu drucke den Text aus dem Anhang aus.
+\nZerschneide ihn bei den Absätzen, mische gut durch. (Bis hierhin bitte alles VOR dem Start in den Tag erledigt haben.) Dann drücke jedem Konfi einen Abschnitt in die Hand und gib ihnen den Auftrag den Text in die richtige Reihenfolge zu puzzeln. Sagen die Konfis sie sind fertig, dann schlage mit ihnen die Bibel auf und lest, ob euer Puzzle stimmt.</item>
+        <item><b>Mögliche Fragen und Impulse für das Gespräch</b></item>
+        <item>xxx- Auch in unserem Umfeld gibt es „fremde“ Menschen. Welche Vorurteile begegnen dir in deinem Leben?
+\n- Hat dich ein Mensch schon mal positiv überrascht? (Der ist ja gar nicht so, wie ich immer gedacht hab...)
+\n- Wie geht’s dir mit dieser Geschichte? Kannst du das glauben, dass Jesus so eine Power hat und wie ein Jedi-Meister Dinge aussprechen kann, die dann auch so passieren?
+\n- Für welchen Menschen würdest du gerne bei Jesus bitten?</item>
+        <item>xxx1 Nachdem Jesus das alles gesagt hatte, ging er wieder nach Kapernaum.
+\n2 Dort lebte ein römischer Hauptmann, der einen Diener hatte, den er sehr schätzte. Nun war dieser Diener schwer erkrankt und lag im Sterben.
+\n3 Als der Hauptmann von Jesus hörte, schickte er einige angesehene Männer aus dem jüdischen Volk zu ihm und bat ihn, zu kommen und seinen Sklaven zu heilen.
+\n4 Diese baten Jesus inständig, mitzukommen und dem Hauptmann zu helfen. »Wenn jemand deine Hilfe verdient, dann er«, sagten sie,
+\n5 »denn er liebt die Juden und hat uns sogar die Synagoge gebaut.«
+\n6 Da ging Jesus mit ihnen. Doch kurz bevor sie das Haus erreichten, schickte der Hauptmann ihm ein paar Freunde entgegen und ließ ihm ausrichten: »Herr, mach dir nicht die Mühe, in mein Haus zu kommen, denn eine solche Ehre verdiene ich nicht.
+\n7 Ich bin nicht einmal würdig genug, selbst zu dir zu kommen. Sprich einfach ein Wort, und mein Diener wird gesund werden.
+\n8 Ich weiß das, weil ich dem Befehl von Vorgesetzten unterstehe und auch selbst Soldaten befehlige. Ich brauche nur zu einem von ihnen zu sagen: `Geh ́, dann geht er, oder: `Komm ́, dann kommt er. Und wenn ich zu meinem Diener sage: `Tu dies ́, dann tut er es.«
+\n9 Als Jesus das hörte, staunte er. Er wandte sich zu der Menge und sagte: »Ich sage euch, einen solchen Glauben habe ich in ganz Israel nicht erlebt!«
+\n10 Und als die Freunde des Hauptmanns in sein Haus zurückkehrten, fanden sie den Diener gesund.</item>
+    </string-array>
+
+
+    <string-array name="startInDenTag_soTitel" translatable="false">
+        <item>Lukas 5,1-11:\nJesus begegnet Petrus</item>
+        <item>Deine ersten Gedanken beim Lesen des Textes</item>
+        <item>Hintergründe und Informationen für dich</item>
+        <item>Zum Lesen mit den Konfis aus dem Start in den Tag - Heft</item>
+    </string-array>
+
+    <string-array name="startInDenTag_soText" translatable="false">
+        <item>xxx<b><i>1</i> Als Jesus eines Tages am See Genezareth predigte, drängten sich viele Menschen um ihn, die alle das Wort Gottes hören wollten.
+\n<i>2</i> Er bemerkte zwei leere Boote am Ufer. Die Fischer hatten sie liegen lassen und reinigten gerade ihre Netze.
+\n<i>3</i> Jesus stieg in eines der Boote und bat den Besitzer des Boots, Simon, vom Ufer abzustoßen. Dann lehrte er die Menge vom Boot aus.
+\n<i>4</i> Als er mit seiner Predigt fertig war, sagte er zu Simon: »Nun fahr weiter hinaus und wirf dort deine Netze aus, dann wirst du viele Fische fangen.«
+\n<i>5</i> »Meister«, entgegnete Simon, »wir haben die ganze letzte Nacht hart gearbeitet und gar nichts gefangen. Aber wenn du es sagst, werde ich es noch einmal versuchen.«
+\n<i>6</i> Diesmal waren ihre Netze so voll, dass sie zu reißen begannen!
+\n<i>7</i> Sie riefen nach ihren Gefährten in dem anderen Boot, und bald darauf waren beide Boote so voller Fische, dass sie unterzugehen drohten.
+\n<i>8</i> Als Simon Petrus begriff, was da geschehen war, fiel er vor Jesus auf die Knie und sagte: »Herr, kümmere dich nicht weiter um mich - ich bin ein zu großer Sünder, um bei dir zu sein.«
+\n<i>9</i> Denn beim Anblick des überreichen Fangs hatte ihn Ehrfurcht erfasst, und den anderen ging es genauso.
+\n<i>10</i> Auch Jakobus und Johannes, die Söhne des Zebedäus, waren voller Staunen. Jesus sagte zu Simon: »Hab keine Angst! Von jetzt an wirst du Menschen fischen!«
+\n<i>11</i> Und sobald sie am Ufer angelegt hatten, ließen sie alles zurück und folgten Jesus nach.</b>\n\n(Übersetzung: Neues Leben)</item>
+        <item>xxxBeim heutigen Text gilt das gleiche wie gestern. (s. „Samstag, Jesus heilt den Sohn eines Hauptmanns“) Bete darum, dass Jesus dir durch seinen Heiligen Geist zeigt, was der Text zunächst für dich ganz persönlich bedeutet. Lies Dir den Text noch mal in Ruhe durch und notiere dir wieder deine Gedanken zu folgenden Stichworten:
+\n(Deine Antworten kannst du gerne zwischen die Zeilen des Bibeltextes schreiben.)
+\nFragen, die dir zu dem Text kommen.
+\n- Was an dem Text gefällt dir besonders?
+\n- Welches ist für dich der wichtigste Vers, bzw. Satz des Textes? Male ihn fett mit einem Leuchtstift an. Warum ist das der wichtigste Vers?
+\n- Wie erlebst du Jesus in diesem Text? Hast du eine neue Seite an ihm kennengelernt?
+\n- Wo und wie fühlst du dich persönlich angesprochen?</item>
+        <item><b>Was davor und danach passiert</b></item>
+        <item>xxxVom ersten Tag an, als Jesus öffentlich auftritt (Kap 4,14f), tut er zwei Dinge: den Menschen von Gott erzählen (V16-30) und jeden gesund machen, der zu ihm kommt V31-41). Es ist also nachvollziehbar, dass Jesus schon ziemlich bekannt ist, als er da am Ufer steht und predigt.
+\nNach der Berufung des Simon und seiner Kameraden geht’s im Grunde so weiter:
+\nJesus macht Menschen gesund (einen Aussätzigen und einen Gelähmten) und ruft andere (Zöllner Levi), dass sie mit ihm leben sollen.</item>
+        <item><b>Vers für Vers</b></item>
+        <item>Ich lass die Sätze weg und schreib nur die Versnummern hin. Leg den Text einfach daneben, das spart Platz, danke :).
+\n<i>1 – 3</i>
+\nAls Jesus predigt, dauert es nicht lange und die Menschenmenge wird so groß, dass sie kaum mehr Platz am Strand haben. Jesus ist unkompliziert und kreativ – ein Fischerboot als schwimmende Kanzel :) Und Simon sitzt hinter Jesus und hört aus nächster Nähe, was dieser sagt.
+\n<i>4</i>
+\nJesus hat die Menschen im Blick. Sogar beim predigen! Er merkt, dass Petrus niedergeschlagen ist von der vergangenen Nacht. Wahrscheinlich hat er am Ufer schon gesehen, dass die Kameraden mit ihren leeren Netzen nicht so gut drauf waren. Kein Wunder, wenn man stundenlang vergeblich arbeitet.
+\nJesus will aber den Simon gewinnen – für sich! Er will, dass er ihm vertraut. Deshalb die ungewöhnliche Aufforderung.
+\n<i>5 – 7</i>
+\nUnd Simon lässt sich drauf ein. Anfänglich zögert er noch – wen wunderts. “Aber wenn du es sagst” – wörtlich heißt es hier: “auf dein Wort” – probier ichs doch noch. Simon vertraut dem Wort von Jesus und wird nicht enttäuscht. Das Boot ist derart voll, dass sie alleine gar nicht mehr fertig werden.
+\n<i>8 – 10a</i>
+\n“Als Petrus 1 begriff...!” In diesem Moment gehen dem Simon die Augen auf. Plötzlich merkte er, dass es Jesus nicht in erster Linie um einen guten Fischfang, eine erfolgreich abgeschlossene Arbeitsnacht ging. Das Jesus Wunder tun kann, “wusste” er im Prinzip schon, seit dieser im Haus seiner Schwiegermutter war und diese geheilt hatte (Kap 4,38f). Jetzt aber betrifft es sein eigenes Leben.
+\nEr merkt: Jesus kümmert sich nicht nur um mein leeres Boot, sondern im Grunde um mein leeres Leben. Und gleichzeit geht im auf: Ich passe nicht zu Gott. Mein ganzes Leben ist so dreckig, dass ich gar nicht verdient habe, bei diesem Jesus zu sein.
+\n<i>10b</i>
+\n“Fürchte dich nicht!”, so heißt es im Original. Jesus befreit uns von dem Dreck unseres Lebens und füllt unser leeres Leben. In Weihnachten, Ostern und Pfingsten hat Jesus für die Sünde der Welt bezahlt und uns durch seinen Geist zu seinen Kindern gemacht. Auch den Petrus. Auch dich und mich! Deshalb brauchen wir weder vor Gott, noch vor uns oder irgend einem Menschen Angst haben. Menschen, die mit Jesus leben, dürfen angstfrei leben!
+\nJesus befreit uns nicht nur von dem alten Leben, er befreit auch zu einem neuen Leben! Mit dieser Befreiung gibt es einen neuen Auftrag für Simon: Menschen fischen. Genaugenommen fordert Jesus ihn gar nicht auf, sondern stellt es wieder durch sein mächtiges Wort klar: Du wirst! In Zukunft Menschen fischen. Was für eine Kraft!
+\n<i>11</i>
+\n„Sobald sie am Ufer angelegt hatten,...“. Die Szene spiele sich also gerade noch im Fischerboot ab, das da auf dem Wasser schaukelte. Wenn man überwältigt ist von einem Erlebnis, ist man schnell beeindruckt. Gefühle aller Art können uns zu allen möglichen Entscheidungen bringen. Ob es ernst ist, zeigt sich, wenn der Alltag wieder kommt.
+\nSimon wusste jetzt, wer dieser Jesus ist. Er hatte gehört, dass Jesus ihm einen neuen Auftrag gegeben hatte. Nachdem er wieder festen Boden unter seinen Füßen hatte, blieb er bei seinem Entschluss – er gab sein altes Leben auf und lebte ab jetzt mit Jesus. Seine Freunde machten es ebenso.</item>
+        <item><b>Mögliche Fragen und Impulse für das Gespräch</b></item>
+        <item>xxxHattest du schon mal ein Erlebnis, dass dich “umgehauen” hat?
+\n- Stell dir vor, du wärst einer dieser Fischer. Hättest du das Netz nochmal rausgeworfen?
+\n- Was müsste heute passieren, damit du Jesus nachfolgst?
+\n- Wie kann denn das “Menschenfischen” praktisch aussehen. Hast du das schon mal probiert?</item>
+    </string-array>
+
+</resources>

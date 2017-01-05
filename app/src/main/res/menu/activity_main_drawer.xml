@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single" android:id="@+id/functionality">
+        <item
+            android:id="@+id/nav_start"
+            android:title="@string/nav_start_in_den_Tag"
+            android:titleCondensed="StartInDenTag" />
+        <item
+            android:id="@+id/nav_programm"
+            android:checked="true"
+            android:title="@string/nav_programm" />
+        <item
+            android:id="@+id/nav_abendgebet"
+            android:title="@string/nav_abendgebet" />
+    </group>
+
+
+    <group android:checkableBehavior="single" android:id="@+id/charity">
+        <item
+            android:id="@+id/nav_angebote"
+            android:title="@string/nav_angebote"
+            android:titleCondensed="Angebote" />
+        <item
+            android:id="@+id/nav_gaestebuch"
+            android:title="@string/nav_gaestebuch" />
+    </group>
+
+
+    <group android:checkableBehavior="single" android:id="@+id/settings">
+       <!-- <item
+            android:id="@+id/nav_feedback"
+            android:title="@string/nav_feedback" />-->
+        <item
+            android:id="@+id/nav_setting"
+            android:title="@string/nav_settings" />
+        <item
+            android:id="@+id/nav_about"
+            android:title="@string/nav_about" />
+
+    </group>
+
+
+</menu>
