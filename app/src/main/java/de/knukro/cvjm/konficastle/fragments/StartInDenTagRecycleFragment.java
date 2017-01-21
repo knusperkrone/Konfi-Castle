@@ -2,7 +2,6 @@ package de.knukro.cvjm.konficastle.fragments;
 
 
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -15,6 +14,7 @@ import java.util.List;
 import de.knukro.cvjm.konficastle.R;
 import de.knukro.cvjm.konficastle.adapter.DynamicViewPagerArrayAdapter;
 import de.knukro.cvjm.konficastle.adapter.ZoomOutPageTransformer;
+import de.knukro.cvjm.konficastle.helper.InitTabLayout;
 
 
 public class StartInDenTagRecycleFragment extends Fragment {
@@ -46,9 +46,7 @@ public class StartInDenTagRecycleFragment extends Fragment {
         viewPager.setAdapter(adapter);
         viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
 
-        final TabLayout tabLayout = (TabLayout) getActivity().findViewById(R.id.sliding_tabs);
-        tabLayout.setupWithViewPager(viewPager);
-        tabLayout.setVisibility(View.VISIBLE);
+        InitTabLayout.init(getActivity(), viewPager);
 
         return rootView;
     }

@@ -18,12 +18,13 @@ import de.knukro.cvjm.konficastle.R;
 import de.knukro.cvjm.konficastle.structs.ArrayParentStruct;
 import de.knukro.cvjm.konficastle.structs.ExpandableDescription;
 
-
+/*Set's up a Viewholder that iflates itself from values of a XML-String[]*/
 public class DynamicViewPagerArrayAdapter extends FragmentStatePagerAdapter {
 
     private final List<Integer> titleIds;
     private final List<Integer> valueIds;
     private final List<String> viewPagerTitles;
+
 
     public DynamicViewPagerArrayAdapter(FragmentManager fm, List<Integer> titleIds,
                                         List<Integer> valueIds, List<String> viewPagerTitles) {
@@ -31,6 +32,10 @@ public class DynamicViewPagerArrayAdapter extends FragmentStatePagerAdapter {
         this.titleIds = titleIds;
         this.valueIds = valueIds;
         this.viewPagerTitles = viewPagerTitles;
+
+        if (titleIds.size() != viewPagerTitles.size()) {
+            throw new IllegalArgumentException("DynamicViewPagerArrayAdapter will break");
+        }
     }
 
     @Override
@@ -43,8 +48,13 @@ public class DynamicViewPagerArrayAdapter extends FragmentStatePagerAdapter {
         return titleIds.size();
     }
 
+    public CharSequence getPageTitle(int position) {
+        return viewPagerTitles.get(position);
+    }
 
 
+    /*Parses a xml String[] int forms it into a inflateable list
+     *Adds to every "titles" as many "texts", until a text starts with 'xxx'*/
     private static List<ArrayParentStruct> prepareList(int titleId, int textId, Context context) {
         List<ArrayParentStruct> list = new ArrayList<>();
         CharSequence[] titles = context.getResources().getTextArray(titleId);
@@ -54,22 +64,18 @@ public class DynamicViewPagerArrayAdapter extends FragmentStatePagerAdapter {
         for (CharSequence s : titles) {
             parentStruct = new ArrayParentStruct(s);
 
-            while (i < text.length && !text[i].subSequence(0,3).toString().equals("xxx")) {
-                parentStruct.texts.add(new ExpandableDescription(text[i++]));
+            while (i < text.length && !text[i].subSequence(0, 3).toString().equals("xxx")) {
+                parentStruct.texts.add(new ExpandableDescription(text[i++], ""));
             }
-            parentStruct.texts.add(new ExpandableDescription(text[i].subSequence(3, text[i].length())));
+            parentStruct.texts.add(
+                    new ExpandableDescription(text[i].subSequence(3, text[i].length()), ""));
             i++;
             list.add(parentStruct);
         }
         return list;
     }
 
-
-    public CharSequence getPageTitle(int position) {
-        return viewPagerTitles.get(position);
-    }
-
-
+    /*This Fragment gets as argument the Ids of the XML-String[] it will inflate in a Recyclerview*/
     public static class InflaterFragment extends Fragment {
 
         private int titleId;
@@ -85,16 +91,16 @@ public class DynamicViewPagerArrayAdapter extends FragmentStatePagerAdapter {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            final View rootView = inflater.inflate(R.layout.fragment_inflate_array, container, false);
+            final View rootView = inflater.inflate(
+                    R.layout.fragment_inflate_array, container, false);
 
             final Context context = getActivity();
 
             final RecyclerView rv1 = (RecyclerView) rootView.findViewById(R.id.inflater_rec);
             rv1.setHasFixedSize(true);
             rv1.setLayoutManager(new LinearLayoutManager(context));
-            rv1.setAdapter(new RecycleStringArrayAdapter(
-                    prepareList(titleId, valueId, context),
-                    context));
+            rv1.setAdapter(
+                    new RecycleStringArrayAdapter(prepareList(titleId, valueId, context), context));
 
             return rootView;
         }

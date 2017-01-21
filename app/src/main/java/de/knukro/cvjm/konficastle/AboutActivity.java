@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import de.knukro.cvjm.konficastle.helper.BootReceiver;
 import de.knukro.cvjm.konficastle.helper.DbOpenHelper;
 
 public class AboutActivity extends AppCompatActivity {
@@ -16,7 +17,7 @@ public class AboutActivity extends AppCompatActivity {
     private SharedPreferences preferences;
     private Context context;
     private int check = 6;
-
+    private DbOpenHelper dbOpenHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,22 +27,23 @@ public class AboutActivity extends AppCompatActivity {
         final ImageButton button = (ImageButton) findViewById(R.id.about_logo);
         context = this;
         preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        dbOpenHelper = DbOpenHelper.getInstance();
 
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (check-- == 0) {
                     String message;
                     if (!preferences.getBoolean(getString(R.string.ma_key), false)) {
-                        message = "Glückwunsch";
+                        message = "Glückwunsch!";
                         preferences.edit().putBoolean(getString(R.string.ma_key), true).apply();
                     } else {
-                        message = "Nicht so übermütig";
+                        message = "Nicht so übermütig!";
                         preferences.edit().putBoolean(getString(R.string.ma_key), false).apply();
                     }
                     Toast.makeText(AboutActivity.this, message, Toast.LENGTH_SHORT).show();
 
-                    DbOpenHelper.getInstance(context).updateProgramm(context);
-
+                    dbOpenHelper.updateDbData(context);
+                    BootReceiver.resetNotifications(context);
                     check = 6;
                 }
             }

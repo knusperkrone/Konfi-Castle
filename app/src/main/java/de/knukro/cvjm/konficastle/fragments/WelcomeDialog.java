@@ -26,12 +26,12 @@ public class WelcomeDialog extends DialogFragment {
         builder.setTitle("Willkommen!");
         builder.setPositiveButton("Alles klar!", null);
         if (!getTag().equals("settings"))
-        builder.setNegativeButton("Einstellungen", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                startActivity(new Intent(getActivity(), SettingsActivity.class));
-            }
-        });
+            builder.setNegativeButton("Einstellungen", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    startActivity(new Intent(getActivity(), SettingsActivity.class));
+                }
+            });
 
         return builder.create();
     }

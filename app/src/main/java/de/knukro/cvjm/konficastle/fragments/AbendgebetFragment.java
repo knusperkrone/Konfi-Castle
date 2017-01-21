@@ -1,7 +1,6 @@
 package de.knukro.cvjm.konficastle.fragments;
 
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -14,6 +13,7 @@ import java.util.List;
 import de.knukro.cvjm.konficastle.R;
 import de.knukro.cvjm.konficastle.adapter.DynamicViewPagerArrayAdapter;
 import de.knukro.cvjm.konficastle.adapter.ZoomOutPageTransformer;
+import de.knukro.cvjm.konficastle.helper.InitTabLayout;
 
 
 public class AbendgebetFragment extends Fragment {
@@ -40,13 +40,10 @@ public class AbendgebetFragment extends Fragment {
         final View rootView = inflater.inflate(R.layout.fragment_inflate_array, container, false);
         ViewPager viewPager = (ViewPager) rootView.findViewById(R.id.inflater_viewpager);
 
-        viewPager.setAdapter(
-                new DynamicViewPagerArrayAdapter(getFragmentManager(), titleIds, valueIds, viewPagerTitles));
+        viewPager.setAdapter(new DynamicViewPagerArrayAdapter(getFragmentManager(), titleIds, valueIds, viewPagerTitles));
         viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
+        InitTabLayout.init(getActivity(), viewPager);
 
-        final TabLayout tabLayout = (TabLayout) getActivity().findViewById(R.id.sliding_tabs);
-        tabLayout.setupWithViewPager(viewPager);
-        tabLayout.setVisibility(View.VISIBLE);
 
         return rootView;
     }

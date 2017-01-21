@@ -7,10 +7,11 @@ import java.util.List;
 
 
 public class ArrayParentStruct implements ParentListItem {
+
     public final CharSequence title;
     public final List<ExpandableDescription> texts;
 
-    public ArrayParentStruct (CharSequence title) {
+    public ArrayParentStruct(CharSequence title) {
         this.title = title;
         this.texts = new ArrayList<>();
     }

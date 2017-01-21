@@ -8,7 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -19,12 +19,14 @@ import android.view.MenuItem;
 import android.view.View;
 
 import de.knukro.cvjm.konficastle.fragments.AbendgebetFragment;
+import de.knukro.cvjm.konficastle.fragments.FreizeitenFragment;
+import de.knukro.cvjm.konficastle.fragments.GaestebuchFragment;
 import de.knukro.cvjm.konficastle.fragments.ProgrammFragment;
 import de.knukro.cvjm.konficastle.fragments.StartInDenTagRecycleFragment;
-import de.knukro.cvjm.konficastle.fragments.WebViewFragment;
 import de.knukro.cvjm.konficastle.fragments.WelcomeDialog;
+import de.knukro.cvjm.konficastle.helper.BootReceiver;
 import de.knukro.cvjm.konficastle.helper.DbOpenHelper;
-import de.knukro.cvjm.konficastle.helper.NotificationHelper;
+import de.knukro.cvjm.konficastle.structs.ExpandableTermin;
 
 
 public class MainActivity extends AppCompatActivity
@@ -34,7 +36,7 @@ public class MainActivity extends AppCompatActivity
     private DrawerLayout drawer;
     private TabLayout tabLayout;
     private NavigationView navigationView;
-
+    private final FragmentManager fm = getSupportFragmentManager();
     private Fragment currFragment;
     private Class fragmentClass;
     private int currView = -1;
@@ -44,15 +46,20 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        DbOpenHelper.getInstance(this);
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            ExpandableTermin.toExpand = extras.getString("toExpand", "");
+        }
+
+        DbOpenHelper.initInstance(this); //Init DbOpenHelper
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -60,8 +67,7 @@ public class MainActivity extends AppCompatActivity
 
         tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
 
-        initInteraction();
-        //NotificationHelper.testNotification(this);
+        additionalInformation();
     }
 
     @Override
@@ -74,26 +80,28 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private void initInteraction() {
+    private void additionalInformation() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         String firstboot = getString(R.string.firstboot);
+        ChangeLog cl = new ChangeLog(this);
         if (sp.getBoolean(firstboot, true)) {
             sp.edit().putBoolean(firstboot, false).apply();
             WelcomeDialog welcomeDialog = new WelcomeDialog();
-            welcomeDialog.show(getSupportFragmentManager(), "welcome_dialog");
+            welcomeDialog.show(fm, "welcome_dialog");
+            BootReceiver.resetNotifications(this);
+            cl.updateVersionInPreferences(); //Don't show changelog
+        } else if (cl.isFirstRun()) {
+            cl.getLogDialog().show();
+            BootReceiver.resetNotifications(this);
         }
-        NotificationHelper.setupNotifications(this);
     }
 
     @Override
     public void onBackPressed() {
-        if (fragmentClass != null && fragmentClass == WebViewFragment.class &&
-                ((WebViewFragment) currFragment).webview.canGoBack()) {
-            ((WebViewFragment) currFragment).webview.goBack();
-        } else if (!drawer.isDrawerOpen(GravityCompat.START)) {
+        if (!drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.openDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            finish();
         }
     }
 
@@ -124,8 +132,6 @@ public class MainActivity extends AppCompatActivity
             return true;
         }
 
-        Bundle bundle = new Bundle();
-
         switch (viewId) {
             case R.id.nav_about:
                 startActivity(new Intent(this, AboutActivity.class));
@@ -138,8 +144,7 @@ public class MainActivity extends AppCompatActivity
                 break;
 
             case R.id.nav_angebote:
-                fragmentClass = WebViewFragment.class;
-                bundle.putString("curl", "https://www.cvjm-bayern.de/urlaub-seminare/freizeiten-und-seminare.html");
+                fragmentClass = FreizeitenFragment.class;
                 toolbar.setTitle("Freizeit Angebote");
                 break;
 
@@ -150,8 +155,7 @@ public class MainActivity extends AppCompatActivity
                 break;*/
 
             case R.id.nav_gaestebuch:
-                fragmentClass = WebViewFragment.class;
-                bundle.putString("curl", "https://www.cvjm-bayern.de/spenden-kontakt/gaestebuch.html");
+                fragmentClass = GaestebuchFragment.class;
                 toolbar.setTitle("Gästebuch");
                 break;
 
@@ -173,23 +177,25 @@ public class MainActivity extends AppCompatActivity
         }
 
         if (fragmentClass != null) {
-            if (fragmentClass == WebViewFragment.class) {
+            //Show or hide TabViewer
+            if (fragmentClass == GaestebuchFragment.class) {
                 tabLayout.setVisibility(View.GONE);
             } else {
                 tabLayout.setVisibility(View.VISIBLE);
             }
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+
             try {
                 currFragment = (Fragment) fragmentClass.newInstance();
-                currFragment.setArguments(bundle);
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
-            ft.replace(R.id.content_main, currFragment).commit();
+            fm.beginTransaction()
+                    .addToBackStack(null)
+                    .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
+                    .replace(R.id.content_main, currFragment)
+                    .commit();
         }
-
         drawer.closeDrawer(GravityCompat.START);
         currView = viewId;
         return true;

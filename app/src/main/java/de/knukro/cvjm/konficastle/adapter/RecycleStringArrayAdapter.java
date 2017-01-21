@@ -18,11 +18,13 @@ import de.knukro.cvjm.konficastle.R;
 import de.knukro.cvjm.konficastle.structs.ArrayParentStruct;
 import de.knukro.cvjm.konficastle.structs.ExpandableDescription;
 
-public class RecycleStringArrayAdapter extends
+/*This is the Adapter for DynamicViewPagerArrayAdapter and more ore less just a viewHolder*/
+class RecycleStringArrayAdapter extends
         ExpandableRecyclerAdapter<RecycleStringArrayAdapter.AbendgebetTitleViewHolder,
                 RecycleStringArrayAdapter.AbendgebetTextViewHolder> {
 
     private final LayoutInflater inflater;
+
 
     static class AbendgebetTitleViewHolder extends ParentViewHolder {
 
@@ -45,7 +47,7 @@ public class RecycleStringArrayAdapter extends
         }
     }
 
-    public RecycleStringArrayAdapter(@NonNull List<? extends ParentListItem> parentItemList,
+    RecycleStringArrayAdapter(@NonNull List<? extends ParentListItem> parentItemList,
                                      Context context) {
         super(parentItemList);
         inflater = LayoutInflater.from(context);
@@ -53,15 +55,13 @@ public class RecycleStringArrayAdapter extends
 
     @Override
     public AbendgebetTitleViewHolder onCreateParentViewHolder(ViewGroup viewGroup) {
-        View view = inflater.inflate(R.layout.abendgebet_title, viewGroup, false);
-        return new AbendgebetTitleViewHolder(view);
+        return new AbendgebetTitleViewHolder(inflater.inflate(R.layout.element_abendgebet_title, viewGroup, false));
 
     }
 
     @Override
     public AbendgebetTextViewHolder onCreateChildViewHolder(ViewGroup viewGroup) {
-        View view = inflater.inflate(R.layout.abendgebet_text, viewGroup, false);
-        return new AbendgebetTextViewHolder(view);
+        return new AbendgebetTextViewHolder(inflater.inflate(R.layout.element_abendgebet_text, viewGroup, false));
     }
 
     @Override

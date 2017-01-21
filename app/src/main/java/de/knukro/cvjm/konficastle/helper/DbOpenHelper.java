@@ -19,9 +19,12 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import de.knukro.cvjm.konficastle.R;
+import de.knukro.cvjm.konficastle.SharedValues;
 import de.knukro.cvjm.konficastle.structs.ExpandableDescription;
 import de.knukro.cvjm.konficastle.structs.ExpandableTermin;
 import de.knukro.cvjm.konficastle.structs.SchedulerObject;
+
+import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
 
 public class DbOpenHelper extends SQLiteOpenHelper {
@@ -32,7 +35,7 @@ public class DbOpenHelper extends SQLiteOpenHelper {
     private static String DB_PATH;
     private final SharedPreferences sp;
     private SQLiteDatabase mDatabase;
-
+    private SchedulerObject programDate;
     private ArrayList<ArrayList<ExpandableTermin>> programList = null;
 
     private static final String queryDate =
@@ -49,16 +52,16 @@ public class DbOpenHelper extends SQLiteOpenHelper {
                     "JOIN Termin\n" +
                     "\tON Termin.Id_Veranstaltung == Veranstaltung.Id\n" +
                     "LEFT JOIN Beschreibung\n" +
-                    "\tON Beschreibung.Id_Instanz == Instanz.Id and Beschreibung.Tag_Termin == Termin.Tag and Beschreibung.Uhrzeit_Termin == Termin.Uhrzeit\n" +
-                    "where Instanz.Id == ?\n" +
-                    "and Kürzel == ?\n" +
-                    "Order by Tag, Uhrzeit";
+                    "\tON Beschreibung.Id_Instanz == Instanz.Id AND Beschreibung.Tag_Termin == Termin.Tag AND Beschreibung.Uhrzeit_Termin == Termin.Uhrzeit\n" +
+                    "WHERE Instanz.Id == ?\n" +
+                    "AND Kürzel == ?\n" +
+                    "ORDER BY Tag, Uhrzeit, TerminBeschreibung";
 
 
     private DbOpenHelper(Context context) {
         super(context, DB_NAME, null, 1);
 
-        sp = PreferenceManager.getDefaultSharedPreferences(context);
+        sp = getDefaultSharedPreferences(context);
         if (DB_PATH == null) {
             DB_PATH = context.getDatabasePath(DB_NAME).getPath();
         }
@@ -72,9 +75,15 @@ public class DbOpenHelper extends SQLiteOpenHelper {
         }
     }
 
-    public static DbOpenHelper getInstance(Context context) {
+    public static void initInstance(Context context) {
         if (instance == null) {
             instance = new DbOpenHelper(context);
+        }
+    }
+
+    public static DbOpenHelper getInstance() {
+        if (instance == null) {
+            throw new IllegalAccessError("Singleton failed!");
         }
         return instance;
     }
@@ -86,11 +95,11 @@ public class DbOpenHelper extends SQLiteOpenHelper {
             PackageInfo packageInfo = context.getPackageManager()
                     .getPackageInfo(context.getPackageName(), 0);
             versionCheck = packageInfo.versionCode;
-        }  catch (PackageManager.NameNotFoundException e) {
+        } catch (PackageManager.NameNotFoundException e) {
             return true;
         }
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        currVersion =  sp.getInt(VERSION_KEY, 1);
+        SharedPreferences sp = getDefaultSharedPreferences(context);
+        currVersion = sp.getInt(VERSION_KEY, 1);
         if (currVersion != versionCheck) {
             sp.edit().putInt(VERSION_KEY, versionCheck).apply();
             return true;
@@ -110,7 +119,7 @@ public class DbOpenHelper extends SQLiteOpenHelper {
             }
             outputStream.flush();
             outputStream.close();
-
+            inputStream.close();
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -131,17 +140,26 @@ public class DbOpenHelper extends SQLiteOpenHelper {
         }
     }
 
+    public void updateDbData(Context mContext) {
+        updateDate(mContext);
+        updateProgramm(mContext);
+        SharedValues.resetCurrProgrammDay();
+    }
+
+    public SchedulerObject getDate(Context mContext) {
+        if (programDate == null)
+            updateDbData(mContext);
+        return programDate;
+    }
 
     public ArrayList<ArrayList<ExpandableTermin>> getProgramm(Context context) {
         if (programList == null) {
-            updateProgramm(context);
+            updateDbData(context);
         }
         return programList;
     }
 
-
-    @SuppressWarnings("WeakerAccess")
-    public SchedulerObject getDates(Context mContext) {
+    private void updateDate(Context mContext) {
         openDatabase();
         Cursor cursor = mDatabase.rawQuery(queryDate, new String[]{
                 sp.getString(mContext.getString(R.string.instanz_key), "1"),
@@ -151,31 +169,29 @@ public class DbOpenHelper extends SQLiteOpenHelper {
         cursor.moveToFirst();
         String startDate = cursor.getString(0); /* DD/MM/YYYY */
         int length = cursor.getInt(1);
-        cursor.close();
         closeDatabase();
+        cursor.close();
 
         GregorianCalendar c = new GregorianCalendar(Integer.valueOf(startDate.substring(6)), //Year
                 Integer.valueOf(startDate.substring(3, 5)) - 1, //Month
                 Integer.valueOf(startDate.substring(0, 2))); //Day
 
         Date start = c.getTime();
-        return new SchedulerObject(start, length);
+        programDate = new SchedulerObject(start, length);
     }
-
 
     /*Necessary through a database design flaw*/
     private String unescape(String description) {
         return description.replaceAll("\\\\n", "\\\n");
     }
 
-    public void updateProgramm(Context mContext) {
+    private void updateProgramm(Context mContext) {
         programList = new ArrayList<>();
         ExpandableTermin currTermin;
         ArrayList<ExpandableTermin> listDay = new ArrayList<>();
 
         boolean ma = sp.getBoolean(mContext.getString(R.string.ma_key), false);
         int index = 1;
-
         openDatabase();
         Cursor cursor = mDatabase.rawQuery(queryProgramm, new String[]{
                 sp.getString(mContext.getString(R.string.instanz_key), "1"),
@@ -187,15 +203,26 @@ public class DbOpenHelper extends SQLiteOpenHelper {
 
             currTermin = new ExpandableTermin(cursor.getString(0), cursor.getString(1), cursor.getString(2));
 
-            if (cursor.getString(3) != null) { //Get the expandable Descriptions
-
+            if (cursor.getString(3) != null) { //Get the expandableDescriptions
                 if (ma) {
+                    /*We are allowed to see everything*/
                     do {
-                        currTermin.details.add(new ExpandableDescription(unescape(cursor.getString(3))));
+                        currTermin.details.add(new ExpandableDescription(unescape(cursor.getString(3)),
+                                cursor.getString(0)));
                         cursor.moveToNext();
                     } while (!cursor.isAfterLast() && cursor.getString(0).equals(currTermin.time));
                 } else {
                     do {
+                        /*We only can see our notes*/
+                        if (cursor.getString(3).startsWith("00NOTIZ::")) {
+                            currTermin.details.add(new ExpandableDescription(unescape(cursor.getString(3)),
+                                    cursor.getString(0)));
+                        } else { //No more notes
+                            while (!cursor.isAfterLast() && cursor.getString(0).equals(currTermin.time)) {
+                                cursor.moveToNext();
+                            }
+                            break;
+                        }
                         cursor.moveToNext();
                     } while (!cursor.isAfterLast() && cursor.getString(0).equals(currTermin.time));
                 }
@@ -216,8 +243,41 @@ public class DbOpenHelper extends SQLiteOpenHelper {
                 index++;
             }
         }
-        cursor.close();
         closeDatabase();
+    }
+
+    private void makeDbAction(String action, Context context) {
+        openDatabase();
+        mDatabase.beginTransaction();
+        mDatabase.execSQL(action);
+        mDatabase.setTransactionSuccessful();
+        mDatabase.endTransaction();
+        closeDatabase();
+        updateProgramm(context);
+    }
+
+    public void deleteNote(Context context, String day, String time, String content) {
+        String id_Instanz;
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        id_Instanz = sp.getString(context.getString(R.string.instanz_key), "1");
+
+        makeDbAction("DELETE FROM Beschreibung WHERE Id_Instanz == \"" + id_Instanz + "\" AND Tag_Termin == \"" + day + "\" AND Uhrzeit_Termin ==\"" + time + "\" AND TerminBeschreibung LIKE \"%" + content + "\"", context);
+    }
+
+    public void updateNote(Context context, String day, String time, String origContent, String newContent) {
+        String id_Instanz;
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        id_Instanz = sp.getString(context.getString(R.string.instanz_key), "1");
+
+        makeDbAction("UPDATE Beschreibung SET TerminBeschreibung = \"00NOTIZ::" + newContent + "\" WHERE Id_Instanz == \"" + id_Instanz + "\" AND Tag_Termin == \"" + day + "\" AND Uhrzeit_Termin ==\"" + time + "\" AND TerminBeschreibung LIKE \"%" + origContent + "\"", context);
+    }
+
+    public void putNote(Context context, String day, String time, String content) {
+        String id_Instanz;
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        id_Instanz = sp.getString(context.getString(R.string.instanz_key), "1");
+
+        makeDbAction("INSERT INTO Beschreibung VALUES (\"" + id_Instanz + "\",\"" + day + "\",\"" + time + "\",\"00NOTIZ::" + content + "\")", context);
     }
 
     @Override

@@ -35,23 +35,24 @@
 
 
     <string-array name="castle_entries" translatable="false">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-        <item>6</item>
-        <item>7</item>
-        <item>8</item>
-        <item>9</item>
-        <item>10</item>
-        <item>11</item>
-        <item>12</item>
-        <item>ÖC</item>
+        <item>1 [13.01 - 16.01]</item>
+        <item>ÖC [20.01 - 23.01]</item>
+        <item>2 [27.01 - 30.01]</item>
+        <item>3 [03.02 - 06.02]</item>
+        <item>4 [10.02 - 13.02]</item>
+        <item>5 [17.02 - 20.02]</item>
+        <item>6 [24.02 - 27.02]</item>
+        <item>7 [27.02 - 02.03]</item>
+        <item>8 [02.03 - 05.03]</item>
+        <item>9 [10.03 - 13.03]</item>
+        <item>10 [13.10 - 16.10]</item>
+        <item>11 [20.10 - 23.10]</item>
+        <item>12 [03.11 - 06.11]</item>
     </string-array>
 
     <string-array name="castle_values" translatable="false">
         <item>1</item>
+        <item>13</item>
         <item>2</item>
         <item>3</item>
         <item>4</item>
@@ -63,7 +64,6 @@
         <item>10</item>
         <item>11</item>
         <item>12</item>
-        <item>13</item>
     </string-array>
 
 

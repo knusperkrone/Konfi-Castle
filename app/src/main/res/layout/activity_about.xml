@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context="de.aron.cvjm.konficastle.de.knukro.cvjm.konficastle.AboutActivity">
+    tools:context=".AboutActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"

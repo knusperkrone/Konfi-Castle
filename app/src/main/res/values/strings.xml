@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">Konfi Castle</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -6,39 +6,61 @@
 
     <string name="welcome">Hallo,
 \n\nUm die App sinnvoll zu nutzen musst du in den Einstellungen auswählen, auf welchen Konfi Castle du dich befindest.
-\nAuch gibt euch diese App bevor ein Programmpunkt losgeht eine Benachrichtigung über Veranstaltungen, dieses Verhalten lässt sich auch in den Einstellungen ändern
+\nAuch gibt euch diese App bevor ein Programmpunkt losgeht eine Benachrichtigung über Veranstaltungen, dieses Verhalten lässt sich auch in den Einstellungen ändern.
+\n\nMit einem langen Druck auf einen Programm Punkt könnt ihr eigene Punkte erstellen, dir ihr auch bearbeiten könnt!
 \n\nWenn ihr das Geheimnis kennt und euch als Mitarbeiter ausweisen könnt, sind ausklappbare Programmpunkte an den roten Streifen neben der Uhrzeit zu erkennen.
 \n\nIch hoffe diese App ist euch ein kleiner Helfer und keine Ablenkung!</string>
 
+    <string name="changelog_full_title">Change Log</string>
+    <string name="changelog_title">Was ist neu?</string>
+    <string name="changelog_ok_button">OK</string>
+    <string name="changelog_show_full">Mehr..</string>
+
+    <string name="freizeit_descr">placeholder</string>
+
+    <string name="changelog_version_format">Version <xliff:g id="version_name">%s</xliff:g></string>
+
+    <string name="firstboot">firstboot</string>
+
+    <string name="content_hint">Gib hier deine Notiz ein!</string>
+    <string name="cancel">Abbruch</string>
+    <string name="delete">Löschen</string>
+    <string name="save">Speichern</string>
+
     <string name="about_logo">CVJM Bayern Logo</string>
     <string name="about_appInfo">CVJM Bayern Konfi Castle App</string>
-    <string name="about_appVersion">Version 0.9</string>
+    <string name="about_appVersion">Version 1.2</string>
     <string name="about_participants">Mitwirkende:</string>
     <string name="about_appAuthor">Doro B. und Aron M.</string>
     <string name="about_appCode">Source code:</string>
     <string name="about_appLink">https://github.com/knusperkrone/Konfi-Castle</string>
-
-    <string name="firstboot">firstboot</string>
-    <string name="active_notifcations">active_notifications</string>
 
     <string name="ma_key">ma_key</string>
     <string name="event_key">event_key</string>
 
     <string name="notification_time_key">notification_time_key</string>
     <string name="notification_time_title">Verzögerung</string>
-    <string name="notification_time_summary">Wie viele Minuten vor der Veranstaltung möchtest du eine Benachrichtigung erhalten?</string>
+    <string name="notification_time_summary_start">Du bekommst </string>
+    <string name="notification_time_summary_end"> Minuten vorher Bescheid</string>
 
     <string name="vibrate_key">vibrate_key</string>
-    <string name="vibrate_summary">Vibration ein oder ausschalten</string>
     <string name="vibrate_title">Vibration</string>
+    <string name="vibrate_summary">Vibration ein oder ausschalten</string>
+    <string name="vibrate_summary_pos">Vibration ist an</string>
+    <string name="vibrate_summary_neg">Vibration ist aus</string>
 
     <string name="instanz_key">instanz_key</string>
-    <string name="event_summary">Über welche Ereignisse möchtest du Benachrichtigungen erhalten?</string>
     <string name="event_title">Benachrichtigung</string>
+    <string name="event_summary">Über welche Ereignisse möchtest du Benachrichtigungen erhalten?</string>
 
     <string name="notification_key">notification_key</string>
-    <string name="notification_summary">Auf welchem Konfi Castle bist du?</string>
     <string name="notification_title">Konfi Castle</string>
+    <string name="notification_summary">Du bist auf dem </string>
+
+    <string name="spam_key">spam_key</string>
+    <string name="spam_title">Optimierte Benachrichtigungen</string>
+    <string name="spam_summary_pos">Aus\nJede Benachrichtigung wird einzeln angezeigt</string>
+    <string name="spam_summary_neg">Ein\nEs wird immer nur die aktuellste Benachrichtigung gezeigt</string>
 
     <string name="help_key">help_key</string>
     <string name="help_title">Hilfe</string>

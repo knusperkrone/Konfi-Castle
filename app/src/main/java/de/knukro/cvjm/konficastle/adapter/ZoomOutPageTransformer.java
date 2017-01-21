@@ -3,10 +3,11 @@ package de.knukro.cvjm.konficastle.adapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
+/*Some animation for ViewPager transitions*/
 public class ZoomOutPageTransformer implements ViewPager.PageTransformer {
+
     private static final float MIN_SCALE = 0.98f;
     private static final float MIN_ALPHA = 0.9f;
-
 
 
     public void transformPage(View view, float position) {

@@ -12,48 +12,43 @@ import android.support.v4.content.ContextCompat;
 
 import de.knukro.cvjm.konficastle.MainActivity;
 import de.knukro.cvjm.konficastle.R;
-import de.knukro.cvjm.konficastle.structs.ExpandableTermin;
 
-import static de.knukro.cvjm.konficastle.helper.NotificationHelper.NotificationPublisher.VIBRATE_KEY;
+import static de.knukro.cvjm.konficastle.SharedValues.NOTIFICATION_ID;
+import static de.knukro.cvjm.konficastle.SharedValues.NOTIFICATION_TEXT;
 
 
 public class NotificationService extends IntentService {
 
-    public static final String NOTIFICATION_ID = "notifiaction_id";
-    public static final String NOTIFICATION_TEXT = "notifacation_text";
     private static final long[] VIBRATIONS = {250, 250};
-
-    public static String NOTICATION_TIME_KEY;
-    public static String VIBRATE_KEY;
+    private static final int DEFAULT_ID = 0;
+    private static String NOTICATION_TIME_KEY, VIBRATE_KEY, SPAM_KEY;
 
 
     public NotificationService() {
-        super("Notification service");
+        super(NotificationService.class.getSimpleName());
     }
-
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        int notification_id = intent.getIntExtra(NOTIFICATION_ID, -1);
+        int intentId = intent.getIntExtra(NOTIFICATION_ID, -1);
 
-        if (notification_id != -1) {
+        if (intentId != -1) {
             Context context = getBaseContext();
-            if (NOTICATION_TIME_KEY == null || VIBRATE_KEY == null) {
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context);
+
+            if (NOTICATION_TIME_KEY == null || VIBRATE_KEY == null || SPAM_KEY == null) {
                 NOTICATION_TIME_KEY = context.getString(R.string.notification_time_key);
                 VIBRATE_KEY = context.getString(R.string.vibrate_key);
+                SPAM_KEY = context.getString(R.string.spam_key);
             }
 
-            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-
             Intent i = new Intent(context, MainActivity.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
-            String text = intent.getStringExtra(NOTIFICATION_TEXT);
-            ExpandableTermin.toExpand = text;
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, DEFAULT_ID, i, PendingIntent.FLAG_UPDATE_CURRENT);
 
-            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getBaseContext());
             mBuilder.setSmallIcon(R.drawable.icon)
-                    .setContentTitle("Es geht in " + sp.getString(NOTICATION_TIME_KEY, "5") + " weiter")
-                    .setContentText(text)
+                    .setContentTitle("Es geht in " + sp.getString(NOTICATION_TIME_KEY, "5") + " Minuten weiter")
+                    .setContentText(intent.getStringExtra(NOTIFICATION_TEXT))
                     .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
                     .setContentIntent(pendingIntent)
                     .setAutoCancel(true);
@@ -62,8 +57,14 @@ public class NotificationService extends IntentService {
                 mBuilder.setVibrate(VIBRATIONS);
             }
 
-            ((NotificationManager) getSystemService(context.NOTIFICATION_SERVICE))
-                    .notify(notification_id, mBuilder.build());
+            if (sp.getBoolean(SPAM_KEY, false)) {
+                ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE))
+                        .notify(DEFAULT_ID, mBuilder.build()); //Only one notification at a time
+            } else {
+                ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE))
+                        .notify(intentId, mBuilder.build()); //Lot's of notifications
+            }
         }
     }
+
 }

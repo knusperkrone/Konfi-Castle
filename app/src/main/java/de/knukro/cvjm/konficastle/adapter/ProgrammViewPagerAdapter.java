@@ -14,17 +14,15 @@ import de.knukro.cvjm.konficastle.structs.ExpandableTermin;
 
 public class ProgrammViewPagerAdapter extends FragmentStatePagerAdapter {
 
-
     private final Context context;
-
     private final ArrayList<ArrayList<ExpandableTermin>> queryRes;
+
 
     public ProgrammViewPagerAdapter(Context context, FragmentManager fragmentManager) {
         super(fragmentManager);
         this.context = context;
-        queryRes = DbOpenHelper.getInstance(context).getProgramm(context);
+        queryRes = DbOpenHelper.getInstance().getProgramm(context);
     }
-
 
     @Override
     public Fragment getItem(int position) {

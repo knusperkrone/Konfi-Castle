@@ -4,15 +4,18 @@
     <SwitchPreference
         android:defaultValue="false"
         android:key="@string/vibrate_key"
-        android:summary="@string/vibrate_summary"
         android:title="@string/vibrate_title" />
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="@string/spam_key"
+        android:title="@string/spam_title" />
 
     <ListPreference
         android:defaultValue="5"
         android:entries="@array/notification_time_values"
         android:entryValues="@array/notification_time_values"
         android:key="@string/notification_time_key"
-        android:summary="@string/notification_time_summary"
         android:title="@string/notification_time_title" />
 
 
