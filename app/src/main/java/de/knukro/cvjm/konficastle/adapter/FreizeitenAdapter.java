@@ -71,7 +71,7 @@ public class FreizeitenAdapter extends RecyclerView.Adapter<FreizeitenAdapter.Fr
         } else {
             holder.card.setCardBackgroundColor(ContextCompat.getColor(context, R.color.colorAccent));
         }
-        holder.image.setOnClickListener(new View.OnClickListener() {
+        holder.card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(Intent.ACTION_VIEW);
@@ -83,13 +83,16 @@ public class FreizeitenAdapter extends RecyclerView.Adapter<FreizeitenAdapter.Fr
         holder.titel.setText(event.eventTitle);
         if (event.imagename != null && ImageStorage.checkifImageExists(event.imagename)) {
             File file = ImageStorage.getImage(event.imagename);
-            try {
-                String path = file.getAbsolutePath();
-                holder.image.setImageBitmap(BitmapFactory.decodeFile(path));
-            } catch (Exception e) {
+            if (file == null) {
                 holder.image.setImageResource(R.drawable.onlineplaceholder);
+            } else {
+                try {
+                    String path = file.getAbsolutePath();
+                    holder.image.setImageBitmap(BitmapFactory.decodeFile(path));
+                } catch (Exception e) {
+                    holder.image.setImageResource(R.drawable.onlineplaceholder);
+                }
             }
-
         } else {
             new GetImages(holder.image, event).execute();
         }

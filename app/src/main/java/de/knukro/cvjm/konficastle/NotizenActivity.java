@@ -10,7 +10,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import de.knukro.cvjm.konficastle.helper.DbOpenHelper;
-import de.knukro.cvjm.konficastle.structs.ExpandableTermin;
 
 public class NotizenActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -49,20 +48,20 @@ public class NotizenActivity extends AppCompatActivity implements View.OnClickLi
         if (content.length() > 0) {
             dbOpenHelper.updateNote(this, day, time, initText, content);
             return true;
-        } else if (content.length() == 0) {
+        } else {
             Toast.makeText(this, "Willst du die Notiz nicht lieber löschen?", Toast.LENGTH_SHORT).show();
+            return false;
         }
-        return false;
     }
 
     private boolean deleteNote() {
         String content = etContent.getText().toString();
         if (content.length() > 0) {
             dbOpenHelper.deleteNote(this, day, time, content);
-            return true;
+            Toast.makeText(this, "Notiz gelöscht", Toast.LENGTH_SHORT).show();
         }
-        Toast.makeText(this, "Da gibt es nichts zum löschen!", Toast.LENGTH_SHORT).show();
-        return false;
+        //Nothing to delete
+        return true;
     }
 
     private boolean saveNote() {
@@ -74,6 +73,7 @@ public class NotizenActivity extends AppCompatActivity implements View.OnClickLi
                 Toast.makeText(this, "Oh, ein Fehler! Gibt es die Notiz schon?", Toast.LENGTH_SHORT).show();
                 return false;
             }
+            Toast.makeText(this, "Notiz gespeichert!", Toast.LENGTH_SHORT).show();
             return true;
         } else {
             Toast.makeText(this, "Eine leere Notiz speichern?", Toast.LENGTH_SHORT).show();
@@ -86,22 +86,21 @@ public class NotizenActivity extends AppCompatActivity implements View.OnClickLi
         switch (v.getId()) {
             case R.id.btn_cancel:
                 if (!wasExpanded) {
-                    ExpandableTermin.toExpand = "";
+                    SharedValues.toExpand = "";
                 }
                 finish();
                 break;
             case R.id.btn_delete:
                 if (deleteNote()) {
-                    Toast.makeText(this, "Notiz gelöscht", Toast.LENGTH_SHORT).show();
                     finish();
                 }
                 break;
             case R.id.btn_save:
                 if (initText != null && updateNote() || saveNote()) { //Old or new notice?
-                    Toast.makeText(this, "Notiz gespeichert!", Toast.LENGTH_SHORT).show();
                     finish();
                 }
             default:
         }
     }
+
 }

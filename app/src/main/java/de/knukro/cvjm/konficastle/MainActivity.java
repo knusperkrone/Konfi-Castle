@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,7 +28,8 @@ import de.knukro.cvjm.konficastle.fragments.StartInDenTagRecycleFragment;
 import de.knukro.cvjm.konficastle.fragments.WelcomeDialog;
 import de.knukro.cvjm.konficastle.helper.BootReceiver;
 import de.knukro.cvjm.konficastle.helper.DbOpenHelper;
-import de.knukro.cvjm.konficastle.structs.ExpandableTermin;
+
+import static android.R.id.toggle;
 
 
 public class MainActivity extends AppCompatActivity
@@ -41,6 +44,23 @@ public class MainActivity extends AppCompatActivity
     private Class fragmentClass;
     private int currView = -1;
 
+
+    private void showFragment() {
+        if (fragmentClass != null) {
+            try {
+                currFragment = (Fragment) fragmentClass.newInstance();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            fm.beginTransaction()
+                    .addToBackStack(null)
+                    .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
+                    .replace(R.id.content_main, currFragment)
+                    .commit();
+            currFragment = null;
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +68,7 @@ public class MainActivity extends AppCompatActivity
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            ExpandableTermin.toExpand = extras.getString("toExpand", "");
+            SharedValues.toExpand = extras.getString(SharedValues.TO_EXPAND, "");
         }
 
         DbOpenHelper.initInstance(this); //Init DbOpenHelper
@@ -57,8 +77,15 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
-                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+            public void onDrawerClosed(View view) {
+                //invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+                super.onDrawerClosed(view);
+                showFragment();
+            }
+        };
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
@@ -67,16 +94,24 @@ public class MainActivity extends AppCompatActivity
 
         tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
 
+        ((FloatingActionButton) findViewById(R.id.floatingActionButton)).hide();
+
         additionalInformation();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (currView == -1 || currView == R.id.nav_programm) {
-            currView = -1;
-            onNavigationItemSelected(navigationView.getMenu().getItem(1));
-            ProgrammFragment.setProgrammTitle(this, toolbar);
+        switch (currView) {
+            case -1:
+            case R.id.nav_about:
+            case R.id.nav_setting:
+                Log.d("onResume", "CurrVIew == "+currView);
+                ProgrammFragment.setProgrammTitle(this, toolbar);
+                currView = R.id.nav_programm;
+                navigationView.setCheckedItem(R.id.nav_programm);
+                fragmentClass = ProgrammFragment.class;
+                showFragment();
         }
     }
 
@@ -116,8 +151,10 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
+            currView = R.id.nav_setting;
             startActivity(new Intent(this, SettingsActivity.class));
         } else if (id == R.id.action_about) {
+            currView = R.id.nav_about;
             startActivity(new Intent(this, AboutActivity.class));
         }
         return super.onOptionsItemSelected(item);
@@ -132,11 +169,12 @@ public class MainActivity extends AppCompatActivity
             return true;
         }
 
+        currView = viewId;
+
         switch (viewId) {
             case R.id.nav_about:
-                startActivity(new Intent(this, AboutActivity.class));
-                drawer.closeDrawer(GravityCompat.START);
-                return true;
+                startActivity(new Intent(getApplication(), AboutActivity.class));
+                break;
 
             case R.id.nav_abendgebet:
                 fragmentClass = AbendgebetFragment.class;
@@ -165,10 +203,9 @@ public class MainActivity extends AppCompatActivity
                 break;
 
             case R.id.nav_setting:
-                startActivity(new Intent(this, SettingsActivity.class));
+                startActivity(new Intent(getApplication(), SettingsActivity.class));
                 toolbar.setTitle("Einstellungen");
-                drawer.closeDrawer(GravityCompat.START);
-                return true;
+                break;
 
             case R.id.nav_start:
                 fragmentClass = StartInDenTagRecycleFragment.class;
@@ -176,28 +213,13 @@ public class MainActivity extends AppCompatActivity
                 break;
         }
 
-        if (fragmentClass != null) {
-            //Show or hide TabViewer
-            if (fragmentClass == GaestebuchFragment.class) {
-                tabLayout.setVisibility(View.GONE);
-            } else {
-                tabLayout.setVisibility(View.VISIBLE);
-            }
-
-            try {
-                currFragment = (Fragment) fragmentClass.newInstance();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            fm.beginTransaction()
-                    .addToBackStack(null)
-                    .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
-                    .replace(R.id.content_main, currFragment)
-                    .commit();
+        if (fragmentClass != null && fragmentClass == GaestebuchFragment.class) {
+            tabLayout.setVisibility(View.GONE);
+        } else {
+            tabLayout.setVisibility(View.VISIBLE);
         }
+
         drawer.closeDrawer(GravityCompat.START);
-        currView = viewId;
         return true;
     }
 

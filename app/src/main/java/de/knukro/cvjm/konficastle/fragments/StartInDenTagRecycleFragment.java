@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.knukro.cvjm.konficastle.R;
+import de.knukro.cvjm.konficastle.SharedValues;
 import de.knukro.cvjm.konficastle.adapter.DynamicViewPagerArrayAdapter;
 import de.knukro.cvjm.konficastle.adapter.ZoomOutPageTransformer;
 import de.knukro.cvjm.konficastle.helper.InitTabLayout;
@@ -46,7 +47,7 @@ public class StartInDenTagRecycleFragment extends Fragment {
         viewPager.setAdapter(adapter);
         viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
 
-        InitTabLayout.init(getActivity(), viewPager);
+        SharedValues.init(getActivity(), viewPager);
 
         return rootView;
     }

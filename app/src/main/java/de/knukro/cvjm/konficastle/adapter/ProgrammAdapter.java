@@ -105,19 +105,16 @@ public class ProgrammAdapter extends
 
             @Override
             public boolean onLongClick(View view) {
+                
+                SharedValues.toExpand = name;
+                SharedValues.setProgrammScrollPosition(i - 1);
+
                 Intent myIntent = new Intent(context, NotizenActivity.class);
                 myIntent.putExtra("expandend", recycleProgrammViewHolder.isExpanded());
-                ExpandableTermin.toExpand = name;
                 myIntent.putExtra("title", "Tag " + currDay + ": " + name);
                 myIntent.putExtra("time", time);
                 myIntent.putExtra("day", String.valueOf(currDay + 1));
                 context.startActivity(myIntent);
-                int pos = i;
-                if (pos > 0) {
-                    pos--;
-                }
-                SharedValues.setProgrammScrollPosition(pos);
-
                 return true;
             }
         });
@@ -142,19 +139,20 @@ public class ProgrammAdapter extends
 
                 @Override
                 public boolean onLongClick(View view) {
-                        /*Save the Programm state to be able to restore it*/
-                    int pos = recycleDescriptionViewHolder.getAdapterPosition();
-                    if (pos > 0) {
-                        pos--;
-                        if (pos > 0) {
-                            pos--; //Scroll up 2 positions
+                    /*Save the Programm state*/
+                    ArrayList<ExpandableTermin> list;
+                    do {
+                        list = dbOpenHelper.getProgramm(context).get(currDay);
+                        if (list == null) {
+                            try {
+                                wait(2);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
-                    }
-                    SharedValues.setProgrammScrollPosition(pos);
-
-                    ArrayList<ExpandableTermin> list = dbOpenHelper.getProgramm(context).get(currDay);
-
-                    ExpandableTermin.toExpand = binarySearch(list, ((ExpandableDescription) o).time, 0, list.size() - 1);
+                    } while (list == null);
+                    SharedValues.setProgrammScrollPosition(recycleDescriptionViewHolder.getAdapterPosition() - 2);
+                    SharedValues.toExpand = binarySearch(list, ((ExpandableDescription) o).time, 0, list.size() - 1);
 
                     Intent myIntent = new Intent(context, NotizenActivity.class);
                     myIntent.putExtra("title", "Notiz bearbeiten");
@@ -169,8 +167,7 @@ public class ProgrammAdapter extends
             recycleDescriptionViewHolder.cv.setCardBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary));
             recycleDescriptionViewHolder.desrc.setText(beschreibung.substring(9));
         } else {
-            //recycleDescriptionViewHolder.cv.setClickable(false);
-            //recycleDescriptionViewHolder.cv.setFocusable(false);
+            recycleDescriptionViewHolder.cv.setForeground(null);
             recycleDescriptionViewHolder.cv.setCardBackgroundColor(ContextCompat.getColor(context, R.color.colorAccent));
             recycleDescriptionViewHolder.desrc.setText(beschreibung);
         }

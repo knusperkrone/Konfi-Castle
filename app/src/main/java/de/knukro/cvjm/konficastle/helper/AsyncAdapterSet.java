@@ -66,8 +66,6 @@ public class AsyncAdapterSet extends AsyncTask<Void, Void, Object> {
     @Override
     protected Object doInBackground(Void... voids) {
         switch (id) {
-            case R.id.nav_programm:
-                return new ProgrammAdapter(query, context, position);
             case R.id.nav_angebote:
                 try {
                     synchronized (AsyncAdapterSet.class) {
@@ -107,13 +105,11 @@ public class AsyncAdapterSet extends AsyncTask<Void, Void, Object> {
     @Override
     protected void onPostExecute(Object adapter) {
         super.onPostExecute(adapter);
-
         if (progressDialog != null) {
             progressDialog.dismiss();
         }
         if (adapter != null) {
             switch (id) {
-                case R.id.nav_programm:
                 case R.id.nav_angebote:
                     rv.setAdapter((RecyclerView.Adapter) adapter);
                     break;

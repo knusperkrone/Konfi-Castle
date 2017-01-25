@@ -12,6 +12,7 @@ public class ImageStorage {
 
     private static final String PATH = "/Konfi_Castle/";
 
+
     static void saveToSdCard(Bitmap bitmap, String filename) {
         filename = filename.substring(filename.indexOf("/") + 1); //trim
         File sdcard = Environment.getExternalStorageDirectory();
@@ -22,14 +23,14 @@ public class ImageStorage {
             return;
         }
 
-        nomedia = new File(folder.getAbsoluteFile(),".nomedia");
+        nomedia = new File(folder.getAbsoluteFile(), ".nomedia");
         file = new File(folder.getAbsoluteFile(), filename);
         if (file.exists()) {
             return;
         }
         try {
             if (!nomedia.exists() && !nomedia.createNewFile()) {
-                return ;
+                return;
             }
             if (file.createNewFile()) {
                 FileOutputStream out = new FileOutputStream(file);
@@ -38,7 +39,7 @@ public class ImageStorage {
                 out.close();
             }
         } catch (Exception e) {
-           e.printStackTrace();
+            e.printStackTrace();
         }
     }
 
@@ -58,11 +59,10 @@ public class ImageStorage {
         return mediaImage;
     }
 
-
     public static boolean checkifImageExists(String imagename) {
         imagename = imagename.substring(imagename.indexOf("/") + 1); //trim
-        File file = ImageStorage.getImage("/" + imagename);
         try {
+            File file = ImageStorage.getImage("/" + imagename);
             String path = file.getAbsolutePath();
             Bitmap b = BitmapFactory.decodeFile(path);
             return !(b == null || b.equals(""));

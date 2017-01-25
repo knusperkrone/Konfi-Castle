@@ -35,9 +35,9 @@
                 android:layout_height="45dp"
                 android:layout_gravity="center_horizontal"
                 app:tabGravity="fill"
-                app:tabMode="fixed"
                 app:tabIndicatorColor="@android:color/white"
-                app:tabIndicatorHeight="5dp" />
+                app:tabIndicatorHeight="5dp"
+                app:tabMode="fixed" />
 
         </android.support.design.widget.AppBarLayout>
 
@@ -55,6 +55,18 @@
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
         <!-- Content main END-->
+
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/floatingActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            android:clickable="true"
+            android:src="@drawable/ic_note_add_black_48dp"
+            app:fabSize="normal" />
+
 
     </android.support.design.widget.CoordinatorLayout>
 

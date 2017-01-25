@@ -1,5 +1,6 @@
 package de.knukro.cvjm.konficastle.fragments;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.knukro.cvjm.konficastle.R;
+import de.knukro.cvjm.konficastle.SharedValues;
 import de.knukro.cvjm.konficastle.adapter.DynamicViewPagerArrayAdapter;
 import de.knukro.cvjm.konficastle.adapter.ZoomOutPageTransformer;
 import de.knukro.cvjm.konficastle.helper.InitTabLayout;
@@ -42,7 +44,7 @@ public class AbendgebetFragment extends Fragment {
 
         viewPager.setAdapter(new DynamicViewPagerArrayAdapter(getFragmentManager(), titleIds, valueIds, viewPagerTitles));
         viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
-        InitTabLayout.init(getActivity(), viewPager);
+        SharedValues.init(getActivity(), viewPager);
 
 
         return rootView;

@@ -5,13 +5,13 @@ import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.knukro.cvjm.konficastle.SharedValues;
+
 public class ExpandableTermin implements ParentListItem {
 
     public final String time;
     public final String name;
     public final String group;
-
-    public static String toExpand = "";
 
     public final ArrayList<ExpandableDescription> details;
 
@@ -29,10 +29,11 @@ public class ExpandableTermin implements ParentListItem {
 
     @Override
     public boolean isInitiallyExpanded() {
-        if (name.equals(toExpand)) {
-            toExpand = "";
+        if (SharedValues.toExpand.equals(this.name)) {
+            SharedValues.toExpand = "";
             return true;
         }
         return false;
     }
+
 }

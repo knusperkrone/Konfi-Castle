@@ -1,7 +1,10 @@
 package de.knukro.cvjm.konficastle.fragments;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,6 +23,19 @@ import de.knukro.cvjm.konficastle.structs.RegisterSite;
 public class GaestebuchFragment extends Fragment {
 
     private LinearLayoutManager llm;
+    private FloatingActionButton button;
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        button.hide();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        button.show();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstance) {
@@ -27,6 +43,15 @@ public class GaestebuchFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_inflate_array, container, false);
         final Context context = getContext();
         final RecyclerView rv1 = (RecyclerView) rootView.findViewById(R.id.inflater_rec);
+        button = (FloatingActionButton) getActivity().findViewById(R.id.floatingActionButton);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse("https://www.cvjm-bayern.de/spenden-kontakt/gaestebuch/eintrag-ins-gaestebuch.html"));
+                context.startActivity(i);
+            }
+        });
         rv1.setHasFixedSize(true);
         llm = new LinearLayoutManager(context);
         rv1.setLayoutManager(llm);

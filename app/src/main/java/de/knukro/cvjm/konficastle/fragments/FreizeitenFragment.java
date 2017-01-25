@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import de.knukro.cvjm.konficastle.R;
+import de.knukro.cvjm.konficastle.SharedValues;
 import de.knukro.cvjm.konficastle.adapter.FreizeitViewPagerAdapter;
 import de.knukro.cvjm.konficastle.adapter.FreizeitenAdapter;
 import de.knukro.cvjm.konficastle.adapter.ZoomOutPageTransformer;
@@ -31,11 +32,11 @@ public class FreizeitenFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstance) {
         final View rootView = inflater.inflate(R.layout.fragment_inflate_array, container, false);
-
+        SharedValues.killRunningAsyncTasks();
         ViewPager viewPager = (ViewPager) rootView.findViewById(R.id.inflater_viewpager);
         viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
         viewPager.setAdapter(new FreizeitViewPagerAdapter(getFragmentManager()));
-        InitTabLayout.init(getActivity(), viewPager);
+        SharedValues.init(getActivity(), viewPager);
 
         return rootView;
     }

@@ -19,7 +19,7 @@ public class SettingsFragment extends PreferenceFragment
 
     private String VIBRATE_KEY, HELP_KEY, INSTANZ_KEY, NOTFICATIONTIME_KEY, SPAM_KEY;
     private boolean VIRBRATE_VALUE, SPAM_VALUE;
-    private Preference vibrateButton, spamButton, notficationTimeButton ,instanzButton;
+    private Preference vibrateButton, spamButton, notficationTimeButton, instanzButton;
     private DbOpenHelper dbOpenHelper;
     private SharedPreferences sp;
 
@@ -63,19 +63,19 @@ public class SettingsFragment extends PreferenceFragment
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-        sp = sharedPreferences;
-        specialAction(s);
+        if (isAdded()) {
+            sp = sharedPreferences;
+            specialAction(s);
 
-        if (isAdded() && !(s.equals(HELP_KEY) || s.equals(VIBRATE_KEY) || s.equals(SPAM_KEY))) {
-            getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
-            Context context = getActivity();
+            if (!(s.equals(HELP_KEY) || s.equals(VIBRATE_KEY) || s.equals(SPAM_KEY))) {
+                getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
+                Context context = getActivity();
 
-            if (s.equals(INSTANZ_KEY)) {
                 dbOpenHelper.updateDbData(context);
-            }
 
-            BootReceiver.resetNotifications(context);
-            getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+                BootReceiver.resetNotifications(context);
+                getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+            }
         }
     }
 

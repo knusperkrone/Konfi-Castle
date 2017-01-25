@@ -1,9 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
     <release
+        version="1.4"
+        versioncode="10">
+        <change>Mit einem langen Druck auf einen Termin kann man neue Notizen hinzufügen und
+            bearbeiten!
+        </change>
+        <change>UI-Verbesserungen</change>
+        <change>Detailprogramme aktualisiert</change>
+        <change>Performance vebessert</change>
+        <change>Eine Menge Bugfixes</change>
+    </release>
+
+    <release
         version="1.3"
         versioncode="9">
-        <change>Es gibt jetzt eine Einstellung für verbessertes Benachrichtigungsmanagment</change>
+        <change>Es gibt jetzt eine Einstellung für ein optimiertes Benachrichtigungsmanagment
+        </change>
         <change>Der Reiter "Freizeit Angebote" wurde komplett überarbeitet</change>
         <change>Der Reiter "Gästebuch" wurde komplett überarbeitet</change>
         <change>Detailprogramme aktualisiert</change>

@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -58,7 +57,8 @@ public class BootReceiver extends BroadcastReceiver {
 
         aManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
-        set = sp.getStringSet(context.getString(R.string.notification_key), new HashSet<>(Arrays.asList(context.getResources().getStringArray(R.array.notification_values))));
+        set = sp.getStringSet(context.getString(R.string.notification_key),
+                new HashSet<>(Arrays.asList(context.getResources().getStringArray(R.array.notification_values))));
 
         int day = (int) TimeUnit.DAYS.convert(System.currentTimeMillis() - toCheck.start.getTime(), TimeUnit.MILLISECONDS);
 
@@ -68,23 +68,28 @@ public class BootReceiver extends BroadcastReceiver {
         } else {
 
             int offset = Integer.valueOf(sp.getString(context.getString(R.string.notification_time_key), "5"));
-            int notification_id = 1;
+            int notification_id = 1; //minimum notificationID
 
             ArrayList<ArrayList<ExpandableTermin>> query = dbOpenHelper.getProgramm(context);
             for (int listDay = (day >= 0) ? day : 0; listDay < query.size(); listDay++) {
                 for (ExpandableTermin termin : query.get(listDay)) {
                     if (set.contains(termin.group)) {
-                        scheduleNotification(
-                                getSecondOffset(termin.time, toCheck, listDay, offset),
+                        scheduleNotification(getSecondOffset(termin.time, toCheck, listDay, offset),
                                 termin.name, context, notification_id++);
                     }
                 }
             }
+
+            if (sp.getBoolean(context.getString(R.string.ma_key), false)) { //Visit out guestbook?
+                ExpandableTermin lastTermin = query.get(query.size() - 1).get(query.get(query.size() - 1).size() - 1);
+                scheduleNotification(getSecondOffset(lastTermin.time, toCheck, (int) toCheck.length - 1, -150), "", context, 0);
+            }
         }
     }
 
-    public static long getSecondOffset(String time, SchedulerObject eventCheck, int day, int offset) {
+    private long getSecondOffset(String time, SchedulerObject eventCheck, int day, int offset) {
         Date event = new Date(eventCheck.start.getTime());
+        //TODO: change to Calendar
         event.setHours(Integer.valueOf(time.substring(0, 2)));
         event.setMinutes(Integer.valueOf(time.substring(3)) - offset);
         event.setDate(event.getDate() + day);
@@ -109,7 +114,6 @@ public class BootReceiver extends BroadcastReceiver {
         } else {
             aManager.set(AlarmManager.RTC_WAKEUP, notification_time, pi);
         }
-        Log.d("Made notification", new Date(notification_time) + notiText );
     }
 
 }

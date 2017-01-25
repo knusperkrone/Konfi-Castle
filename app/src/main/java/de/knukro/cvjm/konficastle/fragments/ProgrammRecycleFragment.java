@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,22 +12,18 @@ import android.view.ViewGroup;
 import java.util.Date;
 import java.util.List;
 
-import de.knukro.cvjm.konficastle.MainActivity;
 import de.knukro.cvjm.konficastle.R;
 import de.knukro.cvjm.konficastle.SharedValues;
 import de.knukro.cvjm.konficastle.adapter.ProgrammAdapter;
 import de.knukro.cvjm.konficastle.helper.AsyncAdapterSet;
-import de.knukro.cvjm.konficastle.helper.GetImages;
 import de.knukro.cvjm.konficastle.structs.ExpandableTermin;
 
 
 public class ProgrammRecycleFragment extends Fragment {
 
-    private static boolean inited = true;
     private List<ExpandableTermin> query;
     private Context context;
     private int position;
-    private LinearLayoutManager llm;
 
 
     public static ProgrammRecycleFragment newInstance(List<ExpandableTermin> query, Context context,
@@ -49,13 +44,11 @@ public class ProgrammRecycleFragment extends Fragment {
 
         final RecyclerView rv = (RecyclerView) rootView.findViewById(R.id.recylce_programm);
         rv.setHasFixedSize(true);
-        if (inited || SharedValues.checkRunningTasks()) {
-            inited = false;
-            rv.setAdapter(new ProgrammAdapter(query, context, position));
-        } else { //No overextending here
-            new AsyncAdapterSet(context, R.id.nav_programm, rv, position, query).execute();
-        }
-        llm = new LinearLayoutManager(getContext());
+        rv.setItemViewCacheSize(35);
+
+        rv.setAdapter(new ProgrammAdapter(query, context, position));
+
+        LinearLayoutManager llm = new LinearLayoutManager(getContext());
         rv.setLayoutManager(llm);
 
         int currPosition = SharedValues.getAndResetProgrammScrollPosition();

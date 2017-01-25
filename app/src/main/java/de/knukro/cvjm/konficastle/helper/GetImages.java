@@ -11,15 +11,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import de.knukro.cvjm.konficastle.R;
 import de.knukro.cvjm.konficastle.SharedValues;
 import de.knukro.cvjm.konficastle.structs.ParsedEvent;
-
-import static android.R.id.list;
 
 
 public class GetImages extends AsyncTask<Object, Object, Object> {
@@ -82,8 +78,8 @@ public class GetImages extends AsyncTask<Object, Object, Object> {
             try {
                 URL url = new URL(baseUrl + imagename);
                 URLConnection conn = url.openConnection();
-                conn.setConnectTimeout(1000); //1 Seconds to connect
-                conn.setReadTimeout(3000); //3 Seconds to get Image;
+                conn.setConnectTimeout(500); //1/2 Seconds to connect.
+                conn.setReadTimeout(1000); //1 Second to get Image;
                 bitmap = BitmapFactory.decodeStream(conn.getInputStream());
             } catch (Exception e) {
                 e.printStackTrace();
@@ -101,12 +97,16 @@ public class GetImages extends AsyncTask<Object, Object, Object> {
                 ImageStorage.saveToSdCard(bitmap, imagename);
             } else {
                 File file = ImageStorage.getImage(imagename);
-                try {
-                    String path = file.getAbsolutePath();
-                    bitmap = BitmapFactory.decodeFile(path);
-                    view.setImageBitmap(bitmap);
-                } catch (Exception e) {
+                if (file == null) {
                     view.setImageResource(R.drawable.onlineplaceholder);
+                } else {
+                    try {
+                        String path = file.getAbsolutePath();
+                        bitmap = BitmapFactory.decodeFile(path);
+                        view.setImageBitmap(bitmap);
+                    } catch (Exception e) {
+                        view.setImageResource(R.drawable.onlineplaceholder);
+                    }
                 }
             }
         } else {

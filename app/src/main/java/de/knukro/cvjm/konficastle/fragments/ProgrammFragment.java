@@ -38,24 +38,24 @@ public class ProgrammFragment extends Fragment {
         SharedValues.setCurrProgrammViewPagerPosition(viewPager.getCurrentItem());
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstance) {
         final View rootView = inflater.inflate(R.layout.fragment_inflate_array, container, false);
         final Context context = getContext();
-        viewPager = (ViewPager) rootView.findViewById(R.id.inflater_viewpager);
-        viewPager.setAdapter(new ProgrammViewPagerAdapter(getActivity(), getFragmentManager()));
-
         int currPage = SharedValues.getAndResetCurrProgrammViewPagerPosition();
+
+        viewPager = (ViewPager) rootView.findViewById(R.id.inflater_viewpager);
+        viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
+        viewPager.setAdapter(new ProgrammViewPagerAdapter(getActivity(), getFragmentManager()));
+        SharedValues.killRunningAsyncTasks();
         if (currPage != -1) { //Go back to the old page
             viewPager.setCurrentItem(currPage);
-        } else if (SharedValues.getCurrProgrammDay(context) <=
+        } else if (SharedValues.getCurrProgrammDay(context) <
                 DbOpenHelper.getInstance().getDate(context).length) { //ViewPager gets initial set to the current day
             viewPager.setCurrentItem((int) SharedValues.getCurrProgrammDay(context));
         }
 
-        viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
-        InitTabLayout.init(getActivity(), viewPager);
+        SharedValues.init(getActivity(), viewPager);
 
         return rootView;
     }

@@ -1,9 +1,12 @@
 package de.knukro.cvjm.konficastle;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
+import android.view.View;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
@@ -13,13 +16,18 @@ import de.knukro.cvjm.konficastle.structs.SchedulerObject;
 
 public class SharedValues {
 
-
     /*GetImages/AsyncAdapterSet <-> ProgrammRecyclerFragment*/
     private static ConcurrentHashMap<AsyncTask, Boolean> runningTasks;
 
     /*BootReceiver <-> NotificationService*/
     public static final String NOTIFICATION_ID = "notification_id";
     public static final String NOTIFICATION_TEXT = "notification_text";
+
+    /*MainActivity <-> NotificationService*/
+    public static final String TO_EXPAND = "toExpand";
+
+    /**/
+    public static String toExpand = "";
 
     /*ProgrammFragment <-> ProgrammRecycleFragment*/
     private static int currPosition = -1;
@@ -38,15 +46,11 @@ public class SharedValues {
     }
 
     public static void killRunningAsyncTasks() {
-        if (runningTasks != null) {
+        if (runningTasks != null && !runningTasks.isEmpty()) {
             for (AsyncTask task : runningTasks.keySet()) {
                 task.cancel(true);
             }
         }
-    }
-
-    public static boolean checkRunningTasks() {
-        return runningTasks != null && !runningTasks.isEmpty();
     }
 
     public static void setCurrProgrammViewPagerPosition(int pos) {
@@ -85,5 +89,19 @@ public class SharedValues {
         }
         return currDay;
     }
+
+
+    public static void init(Activity activity, ViewPager viewPager) {
+        TabLayout tabLayout = (TabLayout) activity.findViewById(R.id.sliding_tabs);
+        tabLayout.setupWithViewPager(viewPager);
+        if (tabLayout.getTabCount() < 6) {
+            tabLayout.setTabMode(TabLayout.MODE_FIXED);
+            tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        } else {
+            tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+        }
+        tabLayout.setVisibility(View.VISIBLE);
+    }
+
 
 }
