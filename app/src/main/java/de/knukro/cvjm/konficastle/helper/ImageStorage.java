@@ -1,11 +1,15 @@
 package de.knukro.cvjm.konficastle.helper;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Environment;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileOutputStream;
+
+import de.knukro.cvjm.konficastle.structs.ParsedEvent;
+
+import static java.lang.System.out;
 
 
 public class ImageStorage {
@@ -13,62 +17,49 @@ public class ImageStorage {
     private static final String PATH = "/Konfi_Castle/";
 
 
-    static void saveToSdCard(Bitmap bitmap, String filename) {
-        filename = filename.substring(filename.indexOf("/") + 1); //trim
-        File sdcard = Environment.getExternalStorageDirectory();
+    private static String prepareFilename(ParsedEvent event) {
+        return event.eventTitle.trim().replace(".", "").replace("/", "") + ".jpg";
+    }
 
-        File file, folder, nomedia;
-        folder = new File(sdcard.getAbsoluteFile(), PATH);//the dot makes this directory hidden to the user
-        if (!folder.exists() && !folder.mkdirs()) {
+    static void saveToSdCard(Bitmap bitmap, ParsedEvent event) {
+        String filename = prepareFilename(event);
+        File outFile, saveDir, nomedia;
+
+        saveDir = new File(Environment.getExternalStorageDirectory(), PATH);
+        if (!saveDir.exists() && !saveDir.mkdirs()) {
+            return;
+        }
+        nomedia = new File(saveDir.getAbsoluteFile(), ".nomedia");
+        outFile = new File(saveDir.getAbsoluteFile(), filename);
+
+        if (outFile.exists()) {
             return;
         }
 
-        nomedia = new File(folder.getAbsoluteFile(), ".nomedia");
-        file = new File(folder.getAbsoluteFile(), filename);
-        if (file.exists()) {
-            return;
-        }
         try {
             if (!nomedia.exists() && !nomedia.createNewFile()) {
                 return;
             }
-            if (file.createNewFile()) {
-                FileOutputStream out = new FileOutputStream(file);
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            if (outFile.createNewFile()) {
+                FileOutputStream outStream = new FileOutputStream(outFile);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 90, outStream);
                 out.flush();
                 out.close();
             }
         } catch (Exception e) {
+            outFile.delete();
+            Log.d("FILENAME", outFile.getAbsolutePath());
             e.printStackTrace();
         }
     }
 
-    public static File getImage(String imagename) {
-        imagename = imagename.substring(imagename.indexOf("/") + 1); //trim
-        File mediaImage = null;
-        try {
-            String root = Environment.getExternalStorageDirectory().toString();
-            File myDir = new File(root);
-            if (!myDir.exists())
-                return null;
 
-            mediaImage = new File(myDir.getPath() + PATH + imagename);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return mediaImage;
+    public static String getImagePath(ParsedEvent event) {
+        String filename = prepareFilename(event);
+        File saveDir = new File(Environment.getExternalStorageDirectory(), PATH);
+        File image = new File(saveDir.getAbsolutePath(), filename);
+        return (image.exists()) ? image.getAbsolutePath() : null;
     }
 
-    public static boolean checkifImageExists(String imagename) {
-        imagename = imagename.substring(imagename.indexOf("/") + 1); //trim
-        try {
-            File file = ImageStorage.getImage("/" + imagename);
-            String path = file.getAbsolutePath();
-            Bitmap b = BitmapFactory.decodeFile(path);
-            return !(b == null || b.equals(""));
-        } catch (Exception e) {
-            return false;
-        }
-    }
 }
 

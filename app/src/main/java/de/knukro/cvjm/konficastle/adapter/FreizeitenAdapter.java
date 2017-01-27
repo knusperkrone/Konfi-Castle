@@ -7,6 +7,8 @@ import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.LoginFilter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,20 +83,17 @@ public class FreizeitenAdapter extends RecyclerView.Adapter<FreizeitenAdapter.Fr
         });
         holder.date.setText(event.date);
         holder.titel.setText(event.eventTitle);
-        if (event.imagename != null && ImageStorage.checkifImageExists(event.imagename)) {
-            File file = ImageStorage.getImage(event.imagename);
-            if (file == null) {
+        String file = ImageStorage.getImagePath(event);
+        if (file != null) {
+            Log.d("FILE", file);
+            try {
+                holder.image.setImageBitmap(BitmapFactory.decodeFile(file));
+            } catch (Exception e) {
+                new File(file).delete();
                 holder.image.setImageResource(R.drawable.onlineplaceholder);
-            } else {
-                try {
-                    String path = file.getAbsolutePath();
-                    holder.image.setImageBitmap(BitmapFactory.decodeFile(path));
-                } catch (Exception e) {
-                    holder.image.setImageResource(R.drawable.onlineplaceholder);
-                }
             }
         } else {
-            new GetImages(holder.image, event).execute();
+            new GetImages(holder.image, event, context).execute();
         }
     }
 
