@@ -7,14 +7,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
-import java.util.List;
-
 import de.knukro.cvjm.konficastle.R;
 import de.knukro.cvjm.konficastle.adapter.FreizeitenAdapter;
-import de.knukro.cvjm.konficastle.adapter.ProgrammAdapter;
 import de.knukro.cvjm.konficastle.fragments.FreizeitenFragment;
 import de.knukro.cvjm.konficastle.fragments.GaestebuchFragment;
-import de.knukro.cvjm.konficastle.structs.ExpandableTermin;
 import de.knukro.cvjm.konficastle.structs.RegisterSite;
 
 
@@ -29,7 +25,6 @@ public class AsyncAdapterSet extends AsyncTask<Void, Void, Object> {
     private boolean init;
     private GaestebuchFragment.GaestebuchAdapter adapter;
     private LinearLayoutManager llm;
-    private List<ExpandableTermin> query;
     private ProgressDialog progressDialog;
 
 
@@ -49,12 +44,11 @@ public class AsyncAdapterSet extends AsyncTask<Void, Void, Object> {
         }
     }
 
-    public AsyncAdapterSet(Context context, int id, RecyclerView rv, int position, List<ExpandableTermin> query) {
+    public AsyncAdapterSet(Context context, int id, RecyclerView rv, int position) {
         this.context = context;
         this.id = id;
         this.rv = rv;
         this.position = position;
-        this.query = query;
         if (id == R.id.nav_angebote && FreizeitenFragment.FreizeitenRecycleFragment.categories == null) {
             progressDialog = new ProgressDialog(context);
             progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);

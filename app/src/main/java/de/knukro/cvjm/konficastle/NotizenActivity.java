@@ -81,6 +81,8 @@ public class NotizenActivity extends AppCompatActivity implements View.OnClickLi
         return false;
     }
 
+
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -92,11 +94,13 @@ public class NotizenActivity extends AppCompatActivity implements View.OnClickLi
                 break;
             case R.id.btn_delete:
                 if (deleteNote()) {
+                    MainActivity.refreshView();
                     finish();
                 }
                 break;
             case R.id.btn_save:
                 if (initText != null && updateNote() || saveNote()) { //Old or new notice?
+                    MainActivity.refreshView();
                     finish();
                 }
             default:

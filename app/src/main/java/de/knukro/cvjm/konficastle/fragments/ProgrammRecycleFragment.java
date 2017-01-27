@@ -15,7 +15,6 @@ import java.util.List;
 import de.knukro.cvjm.konficastle.R;
 import de.knukro.cvjm.konficastle.SharedValues;
 import de.knukro.cvjm.konficastle.adapter.ProgrammAdapter;
-import de.knukro.cvjm.konficastle.helper.AsyncAdapterSet;
 import de.knukro.cvjm.konficastle.structs.ExpandableTermin;
 
 

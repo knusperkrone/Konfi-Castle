@@ -21,7 +21,7 @@ public class WelcomeDialog extends DialogFragment {
 
         LayoutInflater i = getActivity().getLayoutInflater();
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setView(i.inflate(R.layout.fragment_welcome_dialog, null, false));
+        builder.setView(i.inflate(R.layout.dialog_welcome, null, false));
         builder.setIcon(R.drawable.ic_menu_send);
         builder.setTitle("Willkommen!");
         builder.setPositiveButton("Alles klar!", null);

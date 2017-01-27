@@ -22,8 +22,8 @@ public class GetImages extends AsyncTask<Object, Object, Object> {
     private static final String baseUrl = "https://www.cvjm-bayern.de/";
     private final ImageView view;
     private final ParsedEvent event;
+    private final Context context;
     private Bitmap bitmap;
-    private Context context;
     private volatile boolean success = true;
 
 

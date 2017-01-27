@@ -17,9 +17,11 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
+import de.knukro.cvjm.konficastle.MainActivity;
 import de.knukro.cvjm.konficastle.R;
-import de.knukro.cvjm.konficastle.SharedValues;
+import de.knukro.cvjm.konficastle.structs.DbDescription;
 import de.knukro.cvjm.konficastle.structs.ExpandableDescription;
 import de.knukro.cvjm.konficastle.structs.ExpandableTermin;
 import de.knukro.cvjm.konficastle.structs.SchedulerObject;
@@ -57,6 +59,8 @@ public class DbOpenHelper extends SQLiteOpenHelper {
                     "AND Kürzel == ?\n" +
                     "ORDER BY Tag, Uhrzeit, TerminBeschreibung";
 
+    private static final String queryNotes = "SELECT * FROM Beschreibung WHERE TerminBeschreibung LIKE \"00NOTIZ::%\"";
+
 
     private DbOpenHelper(Context context) {
         super(context, DB_NAME, null, 1);
@@ -89,7 +93,7 @@ public class DbOpenHelper extends SQLiteOpenHelper {
     }
 
     private boolean checkUpgraded(Context context) {
-        String VERSION_KEY = "version_key";
+        final String VERSION_KEY = "version_key";
         int versionCheck, currVersion;
         try {
             PackageInfo packageInfo = context.getPackageManager()
@@ -106,6 +110,7 @@ public class DbOpenHelper extends SQLiteOpenHelper {
         }
         return false;
     }
+
 
     private boolean copyDatabase(Context context) {
         try {
@@ -143,7 +148,7 @@ public class DbOpenHelper extends SQLiteOpenHelper {
     public void updateDbData(Context mContext) {
         updateDate(mContext);
         updateProgramm(mContext);
-        SharedValues.resetCurrProgrammDay();
+        MainActivity.refreshView();
     }
 
     public SchedulerObject getDate(Context mContext) {
@@ -244,6 +249,20 @@ public class DbOpenHelper extends SQLiteOpenHelper {
             }
         }
         closeDatabase();
+    }
+
+    List<DbDescription> getNotes() {
+        List<DbDescription> notes = new ArrayList<>();
+        openDatabase();
+        Cursor cursor = mDatabase.rawQuery(queryNotes, new String[]{});
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            notes.add(new DbDescription(cursor.getInt(0), cursor.getInt(1), cursor.getString(2), cursor.getString(3)));
+            cursor.moveToNext();
+        }
+        cursor.close();
+        closeDatabase();
+        return notes;
     }
 
     private void makeDbAction(String action, Context context) {

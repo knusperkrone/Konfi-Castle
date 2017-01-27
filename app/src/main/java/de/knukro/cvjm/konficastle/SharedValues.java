@@ -8,7 +8,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 import de.knukro.cvjm.konficastle.helper.DbOpenHelper;
@@ -16,8 +16,18 @@ import de.knukro.cvjm.konficastle.structs.SchedulerObject;
 
 public class SharedValues {
 
+    private static class AsyncTaskObject {
+        final AsyncTask task;
+        final Object callerClass;
+
+        AsyncTaskObject(AsyncTask task, Object callerClass) {
+            this.task = task;
+            this.callerClass = callerClass;
+        }
+    }
+
     /*GetImages/AsyncAdapterSet <-> ProgrammRecyclerFragment*/
-    private static ConcurrentHashMap<AsyncTask, Boolean> runningTasks;
+    private static LinkedBlockingQueue<AsyncTaskObject> runningTasks;
 
     /*BootReceiver <-> NotificationService*/
     public static final String NOTIFICATION_ID = "notification_id";
@@ -35,20 +45,28 @@ public class SharedValues {
     private static int currScrollPosition = -1;
 
 
-    public static void addAsyncTask(AsyncTask task) {
+    public static void addAsyncTask(AsyncTask task, Object callingClass) {
         if (runningTasks == null)
-            runningTasks = new ConcurrentHashMap<>();
-        runningTasks.put(task, true);
+            runningTasks = new LinkedBlockingQueue<>();
+        runningTasks.add(new AsyncTaskObject(task, callingClass));
     }
 
     public static void removeAsyncTask(AsyncTask task) {
-        runningTasks.remove(task);
+        if (runningTasks != null) {
+            for (AsyncTaskObject taskObject : runningTasks) {
+                if (!taskObject.task.equals(task)) {
+                    runningTasks.remove(taskObject);
+                }
+            }
+        }
     }
 
-    public static void killRunningAsyncTasks() {
+    public static void killRunningAsyncTasks(Object callingClass) {
         if (runningTasks != null && !runningTasks.isEmpty()) {
-            for (AsyncTask task : runningTasks.keySet()) {
-                task.cancel(true);
+            for (AsyncTaskObject taskObject : runningTasks) {
+                if (!taskObject.callerClass.equals(callingClass)) {
+                    taskObject.task.cancel(true);
+                }
             }
         }
     }
@@ -78,10 +96,6 @@ public class SharedValues {
         return tmp;
     }
 
-    public static void resetCurrProgrammDay() {
-        currDay = -1;
-    }
-
     public static long getCurrProgrammDay(Context context) {
         if (currDay == -1) {
             SchedulerObject toCheck = DbOpenHelper.getInstance().getDate(context);
@@ -91,7 +105,7 @@ public class SharedValues {
     }
 
 
-    public static void init(Activity activity, ViewPager viewPager) {
+    public static void initTablayout(Activity activity, ViewPager viewPager) {
         TabLayout tabLayout = (TabLayout) activity.findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
         if (tabLayout.getTabCount() < 6) {

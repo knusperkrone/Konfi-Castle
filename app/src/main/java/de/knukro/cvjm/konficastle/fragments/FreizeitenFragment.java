@@ -23,7 +23,6 @@ import de.knukro.cvjm.konficastle.adapter.FreizeitViewPagerAdapter;
 import de.knukro.cvjm.konficastle.adapter.FreizeitenAdapter;
 import de.knukro.cvjm.konficastle.adapter.ZoomOutPageTransformer;
 import de.knukro.cvjm.konficastle.helper.AsyncAdapterSet;
-import de.knukro.cvjm.konficastle.helper.InitTabLayout;
 import de.knukro.cvjm.konficastle.structs.Category;
 
 
@@ -32,11 +31,11 @@ public class FreizeitenFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstance) {
         final View rootView = inflater.inflate(R.layout.fragment_inflate_array, container, false);
-        SharedValues.killRunningAsyncTasks();
+        SharedValues.killRunningAsyncTasks(FreizeitenFragment.class);
         ViewPager viewPager = (ViewPager) rootView.findViewById(R.id.inflater_viewpager);
         viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
         viewPager.setAdapter(new FreizeitViewPagerAdapter(getFragmentManager()));
-        SharedValues.init(getActivity(), viewPager);
+        SharedValues.initTablayout(getActivity(), viewPager);
 
         return rootView;
     }
@@ -66,11 +65,11 @@ public class FreizeitenFragment extends Fragment {
             final RecyclerView rv1 = (RecyclerView) rootView.findViewById(R.id.inflater_rec);
             rv1.setHasFixedSize(true);
             rv1.setLayoutManager(new LinearLayoutManager(context));
-            rv1.setItemViewCacheSize(20);
+            rv1.setItemViewCacheSize(35);
             rv1.setDrawingCacheEnabled(true);
-            rv1.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
+            rv1.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
             if (categories == null) {
-                new AsyncAdapterSet(context, R.id.nav_angebote, rv1, position, null).execute();
+                new AsyncAdapterSet(context, R.id.nav_angebote, rv1, position).execute();
             } else {
                 rv1.setAdapter(new FreizeitenAdapter(context, position));
             }

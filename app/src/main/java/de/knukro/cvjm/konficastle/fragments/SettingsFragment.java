@@ -9,6 +9,7 @@ import android.preference.PreferenceManager;
 
 import de.knukro.cvjm.konficastle.R;
 import de.knukro.cvjm.konficastle.SettingsActivity;
+import de.knukro.cvjm.konficastle.dialogs.WelcomeDialog;
 import de.knukro.cvjm.konficastle.helper.BootReceiver;
 import de.knukro.cvjm.konficastle.helper.DbOpenHelper;
 

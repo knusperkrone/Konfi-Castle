@@ -39,7 +39,7 @@ public class GaestebuchFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstance) {
-        SharedValues.killRunningAsyncTasks();
+        SharedValues.killRunningAsyncTasks(GaestebuchFragment.class);
         View rootView = inflater.inflate(R.layout.fragment_inflate_array, container, false);
         final Context context = getContext();
         final RecyclerView rv1 = (RecyclerView) rootView.findViewById(R.id.inflater_rec);

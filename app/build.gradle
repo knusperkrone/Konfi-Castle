@@ -5,10 +5,10 @@ android {
     buildToolsVersion "25.0.1"
     defaultConfig {
         applicationId "de.knukro.cvjm.konficastle"
-        minSdkVersion 17
+        minSdkVersion 16
         targetSdkVersion 25
-        versionCode 10
-        versionName "1.4"
+        versionCode 11
+        versionName "1.5"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }

@@ -6,6 +6,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +16,12 @@ import de.knukro.cvjm.konficastle.SharedValues;
 import de.knukro.cvjm.konficastle.adapter.ProgrammViewPagerAdapter;
 import de.knukro.cvjm.konficastle.adapter.ZoomOutPageTransformer;
 import de.knukro.cvjm.konficastle.helper.DbOpenHelper;
-import de.knukro.cvjm.konficastle.helper.InitTabLayout;
 
 /*This Fragments sets up the ViewPager for the Programm*/
 public class ProgrammFragment extends Fragment {
 
     private ViewPager viewPager;
+    private Context context;
 
     public static void setProgrammTitle(Context context, Toolbar toolbar) {
         String instance = PreferenceManager.getDefaultSharedPreferences(context).getString(
@@ -36,18 +37,18 @@ public class ProgrammFragment extends Fragment {
     public void onPause() {
         super.onPause();
         SharedValues.setCurrProgrammViewPagerPosition(viewPager.getCurrentItem());
+        Log.d("Current item", ""+viewPager.getCurrentItem());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstance) {
         final View rootView = inflater.inflate(R.layout.fragment_inflate_array, container, false);
-        final Context context = getContext();
+        context = getContext();
         int currPage = SharedValues.getAndResetCurrProgrammViewPagerPosition();
 
         viewPager = (ViewPager) rootView.findViewById(R.id.inflater_viewpager);
         viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
         viewPager.setAdapter(new ProgrammViewPagerAdapter(getActivity(), getFragmentManager()));
-        SharedValues.killRunningAsyncTasks();
         if (currPage != -1) { //Go back to the old page
             viewPager.setCurrentItem(currPage);
         } else if (SharedValues.getCurrProgrammDay(context) <
@@ -55,7 +56,8 @@ public class ProgrammFragment extends Fragment {
             viewPager.setCurrentItem((int) SharedValues.getCurrProgrammDay(context));
         }
 
-        SharedValues.init(getActivity(), viewPager);
+        SharedValues.killRunningAsyncTasks(ProgrammFragment.class);
+        SharedValues.initTablayout(getActivity(), viewPager);
 
         return rootView;
     }

@@ -15,21 +15,19 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import de.knukro.cvjm.konficastle.dialogs.WelcomeDialog;
 import de.knukro.cvjm.konficastle.fragments.AbendgebetFragment;
 import de.knukro.cvjm.konficastle.fragments.FreizeitenFragment;
 import de.knukro.cvjm.konficastle.fragments.GaestebuchFragment;
 import de.knukro.cvjm.konficastle.fragments.ProgrammFragment;
 import de.knukro.cvjm.konficastle.fragments.StartInDenTagRecycleFragment;
-import de.knukro.cvjm.konficastle.fragments.WelcomeDialog;
 import de.knukro.cvjm.konficastle.helper.BootReceiver;
 import de.knukro.cvjm.konficastle.helper.DbOpenHelper;
-
-import static android.R.id.toggle;
+import de.knukro.cvjm.konficastle.helper.DbUpdater;
 
 
 public class MainActivity extends AppCompatActivity
@@ -43,6 +41,7 @@ public class MainActivity extends AppCompatActivity
     private Fragment currFragment;
     private Class fragmentClass;
     private int currView = -1;
+    private static boolean update = false;
 
 
     private void showFragment() {
@@ -59,6 +58,10 @@ public class MainActivity extends AppCompatActivity
                     .commit();
             currFragment = null;
         }
+    }
+
+    public static void refreshView() {
+        update = true;
     }
 
     @Override
@@ -96,40 +99,35 @@ public class MainActivity extends AppCompatActivity
 
         ((FloatingActionButton) findViewById(R.id.floatingActionButton)).hide();
 
-        additionalInformation();
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        String firstboot = getString(R.string.firstboot);
+        ChangeLog cl = new ChangeLog(this);
+        if (sp.getBoolean(firstboot, true)) {
+            WelcomeDialog welcomeDialog = new WelcomeDialog();
+            welcomeDialog.show(fm, "welcome_dialog");
+            BootReceiver.resetNotifications(this);
+            cl.updateVersionInPreferences(); //Don't show changelog
+            sp.edit().putBoolean(firstboot, false).apply();
+        } else if (cl.isFirstRun()) {
+            cl.getLogDialog().show();
+            BootReceiver.resetNotifications(this);
+        }
+        new DbUpdater(this).execute();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        switch (currView) {
-            case -1:
-            case R.id.nav_about:
-            case R.id.nav_setting:
-                Log.d("onResume", "CurrVIew == "+currView);
-                ProgrammFragment.setProgrammTitle(this, toolbar);
-                currView = R.id.nav_programm;
-                navigationView.setCheckedItem(R.id.nav_programm);
-                fragmentClass = ProgrammFragment.class;
-                showFragment();
+        if (currView == -1 || (update && currView == R.id.nav_programm)) {
+            ProgrammFragment.setProgrammTitle(this, toolbar);
+            currView = R.id.nav_programm;
+            navigationView.setCheckedItem(R.id.nav_programm);
+            fragmentClass = ProgrammFragment.class;
+            showFragment();
+            update = false;
         }
     }
 
-    private void additionalInformation() {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        String firstboot = getString(R.string.firstboot);
-        ChangeLog cl = new ChangeLog(this);
-        if (sp.getBoolean(firstboot, true)) {
-            sp.edit().putBoolean(firstboot, false).apply();
-            WelcomeDialog welcomeDialog = new WelcomeDialog();
-            welcomeDialog.show(fm, "welcome_dialog");
-            BootReceiver.resetNotifications(this);
-            cl.updateVersionInPreferences(); //Don't show changelog
-        } else if (cl.isFirstRun()) {
-            cl.getLogDialog().show();
-            BootReceiver.resetNotifications(this);
-        }
-    }
 
     @Override
     public void onBackPressed() {
@@ -149,12 +147,10 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
+        currView = -1;
         if (id == R.id.action_settings) {
-            currView = R.id.nav_setting;
             startActivity(new Intent(this, SettingsActivity.class));
         } else if (id == R.id.action_about) {
-            currView = R.id.nav_about;
             startActivity(new Intent(this, AboutActivity.class));
         }
         return super.onOptionsItemSelected(item);
@@ -169,7 +165,6 @@ public class MainActivity extends AppCompatActivity
             return true;
         }
 
-        currView = viewId;
 
         switch (viewId) {
             case R.id.nav_about:
@@ -218,6 +213,12 @@ public class MainActivity extends AppCompatActivity
         } else {
             tabLayout.setVisibility(View.VISIBLE);
         }
+
+        if (fragmentClass == null) {
+            viewId = -1;
+        }
+
+        currView = viewId;
 
         drawer.closeDrawer(GravityCompat.START);
         return true;

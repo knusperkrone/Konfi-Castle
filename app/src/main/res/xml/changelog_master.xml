@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
+
+    <release
+        version="1.5"
+        versioncode="11">
+        <change>Abwärtskompatibilität verbessert</change>
+        <change>Ein Fehler, dass Notizen nicht angezeigt werden wurde behoben</change>
+        <change>Die App updatet seine Datenbank nun selbstständig!</change>
+    </release>
+
     <release
         version="1.4"
         versioncode="10">
