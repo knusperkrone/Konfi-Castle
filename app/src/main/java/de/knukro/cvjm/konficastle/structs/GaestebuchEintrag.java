@@ -1,9 +1,9 @@
 package de.knukro.cvjm.konficastle.structs;
 
-public class Entry {
+public class GaestebuchEintrag {
     public final String author, text;
 
-    public Entry(String author, String text) {
+    public GaestebuchEintrag(String author, String text) {
         this.author = author;
         if (text.endsWith("-->")) {
             this.text = text.substring(3, text.indexOf("<!--") - 6).replace("<br>", "\n");

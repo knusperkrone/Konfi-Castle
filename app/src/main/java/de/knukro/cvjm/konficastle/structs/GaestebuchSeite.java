@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Category {
+public class GaestebuchSeite {
 
     //private final String categoryTitle;
     public final List<ParsedEvent> events;
 
-    public Category() {
+    public GaestebuchSeite() {
         //this.categoryTitle = categoryTitle;
         events = new ArrayList<>();
     }
