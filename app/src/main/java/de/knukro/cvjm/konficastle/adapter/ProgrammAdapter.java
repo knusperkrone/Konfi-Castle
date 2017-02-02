@@ -12,31 +12,109 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.bignerdranch.expandablerecyclerview.Adapter.ExpandableRecyclerAdapter;
-import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
-import com.bignerdranch.expandablerecyclerview.ViewHolder.ChildViewHolder;
-import com.bignerdranch.expandablerecyclerview.ViewHolder.ParentViewHolder;
+import com.bignerdranch.expandablerecyclerview.ChildViewHolder;
+import com.bignerdranch.expandablerecyclerview.ExpandableRecyclerAdapter;
+import com.bignerdranch.expandablerecyclerview.ParentViewHolder;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import de.knukro.cvjm.konficastle.NotizenActivity;
 import de.knukro.cvjm.konficastle.R;
 import de.knukro.cvjm.konficastle.SharedValues;
-import de.knukro.cvjm.konficastle.helper.DbOpenHelper;
 import de.knukro.cvjm.konficastle.structs.ExpandableDescription;
 import de.knukro.cvjm.konficastle.structs.ExpandableTermin;
 
 
 public class ProgrammAdapter extends
-        ExpandableRecyclerAdapter<ProgrammAdapter.RecycleProgrammViewHolder, ProgrammAdapter.RecycleDescriptionViewHolder> {
+        ExpandableRecyclerAdapter<ExpandableTermin, ExpandableDescription, ProgrammAdapter.RecycleProgrammViewHolder, ProgrammAdapter.RecycleDescriptionViewHolder> {
 
     private final LayoutInflater inflater;
     private final Context context;
     private final int currDay;
-    private final DbOpenHelper dbOpenHelper;
-    private final Drawable animationResource;
 
+    public ProgrammAdapter(@NonNull List<ExpandableTermin> parentItemList,
+                           Context context, int day) {
+        super(parentItemList);
+        this.context = context;
+        this.currDay = day;
+        inflater = LayoutInflater.from(context);
+    }
+
+    @Override
+    public RecycleProgrammViewHolder onCreateParentViewHolder(ViewGroup viewGroup, int i) {
+        View view = inflater.inflate(R.layout.expandable_termin, viewGroup, false);
+        return new RecycleProgrammViewHolder(view);
+    }
+
+    @Override
+    public RecycleDescriptionViewHolder onCreateChildViewHolder(ViewGroup viewGroup, int i) {
+        View view = inflater.inflate(R.layout.expandable_description, viewGroup, false);
+        return new RecycleDescriptionViewHolder(view, context);
+    }
+
+    @Override
+    public void onBindParentViewHolder(@NonNull final RecycleProgrammViewHolder recycleProgrammViewHolder, final int i, @NonNull final ExpandableTermin parentListItem) {
+        final String name = parentListItem.name;
+        final String time = parentListItem.time;
+        recycleProgrammViewHolder.time.setText(time);
+        recycleProgrammViewHolder.name.setText(name);
+        final ExpandableRecyclerAdapter adapter = this;
+
+        recycleProgrammViewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+
+            @Override
+            public boolean onLongClick(View view) {
+                Intent myIntent = new Intent(context, NotizenActivity.class);
+                myIntent.putExtra("title", "Tag " + currDay + ": " + name);
+                myIntent.putExtra("day", String.valueOf(currDay + 1));
+                myIntent.putExtra("time", time);
+                myIntent.putExtra("parent", i);
+
+                SharedValues.setAdapter(adapter);
+                context.startActivity(myIntent);
+                return true;
+            }
+        });
+
+        if (parentListItem.details.isEmpty()) {
+            recycleProgrammViewHolder.indicator.setVisibility(View.GONE);
+        } else {
+            recycleProgrammViewHolder.indicator.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void onBindChildViewHolder(@NonNull final RecycleDescriptionViewHolder recycleDescriptionViewHolder, final int i, final int i1, @NonNull final ExpandableDescription o) {
+        final String beschreibung = o.description.toString();
+            /* Notiz implementation may seem buggy, but works pretty good and feels somehow faster
+             * than an extra join on the database*/
+        if (beschreibung.startsWith("00NOTIZ::")) {
+            final ExpandableRecyclerAdapter adapter = this;
+            recycleDescriptionViewHolder.cv.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    Intent myIntent = new Intent(context, NotizenActivity.class);
+                    myIntent.putExtra("title", context.getString(R.string.adapter_programm_defaultnotiz));
+                    myIntent.putExtra("day", String.valueOf(currDay + 1));
+                    myIntent.putExtra("time", o.time);
+                    myIntent.putExtra("content", beschreibung);
+                    myIntent.putExtra("parent", i);
+
+                    SharedValues.setAdapter(adapter);
+                    context.startActivity(myIntent);
+                    return true;
+                }
+            });
+
+            recycleDescriptionViewHolder.cv.setCardBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary));
+            recycleDescriptionViewHolder.desrc.setText(beschreibung.substring(9));
+            recycleDescriptionViewHolder.cv.setForeground(recycleDescriptionViewHolder.animation);
+        } else {
+            recycleDescriptionViewHolder.cv.setForeground(null);
+            recycleDescriptionViewHolder.cv.setCardBackgroundColor(ContextCompat.getColor(context, R.color.colorAccent));
+            recycleDescriptionViewHolder.desrc.setText(beschreibung);
+        }
+    }
 
     static class RecycleProgrammViewHolder extends ParentViewHolder {
 
@@ -53,150 +131,20 @@ public class ProgrammAdapter extends
 
     }
 
-
     static class RecycleDescriptionViewHolder extends ChildViewHolder {
 
         final TextView desrc;
         final CardView cv;
+        final Drawable animation;
 
-        private RecycleDescriptionViewHolder(View viewItem) {
+        private RecycleDescriptionViewHolder(View viewItem, Context context) {
             super(viewItem);
             desrc = (TextView) viewItem.findViewById(R.id.exp_desc);
             cv = (CardView) viewItem.findViewById(R.id.cardview_description);
+            int[] attrs = new int[]{R.attr.selectableItemBackground};
+            TypedArray typedArray = context.obtainStyledAttributes(attrs);
+            animation = typedArray.getDrawable(0);
         }
     }
-
-
-    public ProgrammAdapter(@NonNull List<? extends ParentListItem> parentItemList,
-                           Context context, int day) {
-        super(parentItemList);
-        this.context = context;
-        this.currDay = day;
-        inflater = LayoutInflater.from(context);
-        dbOpenHelper = DbOpenHelper.getInstance();
-        int[] attrs = new int[]{R.attr.selectableItemBackground};
-        TypedArray typedArray = context.obtainStyledAttributes(attrs);
-        animationResource = typedArray.getDrawable(0 /* index */);
-    }
-
-    @Override
-    public RecycleProgrammViewHolder onCreateParentViewHolder(ViewGroup viewGroup) {
-        View view = inflater.inflate(R.layout.expandable_termin, viewGroup, false);
-        return new RecycleProgrammViewHolder(view);
-    }
-
-    @Override
-    public RecycleDescriptionViewHolder onCreateChildViewHolder(ViewGroup viewGroup) {
-        View view = inflater.inflate(R.layout.expandable_description, viewGroup, false);
-        return new RecycleDescriptionViewHolder(view);
-    }
-
-    @Override
-    public void onBindParentViewHolder(final RecycleProgrammViewHolder recycleProgrammViewHolder,
-                                       final int i, ParentListItem parentListItem) {
-
-        final String name = ((ExpandableTermin) parentListItem).name;
-        final String time = ((ExpandableTermin) parentListItem).time;
-        recycleProgrammViewHolder.time.setText(time);
-        recycleProgrammViewHolder.name.setText(name);
-
-
-        recycleProgrammViewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-
-            @Override
-            public boolean onLongClick(View view) {
-                
-                SharedValues.toExpand = name;
-                SharedValues.setProgrammScrollPosition(i - 1);
-
-                Intent myIntent = new Intent(context, NotizenActivity.class);
-                myIntent.putExtra("expandend", recycleProgrammViewHolder.isExpanded());
-                myIntent.putExtra("title", "Tag " + currDay + ": " + name);
-                myIntent.putExtra("time", time);
-                myIntent.putExtra("day", String.valueOf(currDay + 1));
-                context.startActivity(myIntent);
-                return true;
-            }
-        });
-
-        if (((ExpandableTermin) parentListItem).details.isEmpty()) {
-            recycleProgrammViewHolder.indicator.setVisibility(View.GONE);
-        } else {
-            recycleProgrammViewHolder.indicator.setVisibility(View.VISIBLE);
-        }
-    }
-
-    @Override
-    public void onBindChildViewHolder(final RecycleDescriptionViewHolder recycleDescriptionViewHolder,
-                                      final int i, final Object o) {
-
-        final String beschreibung = ((ExpandableDescription) o).beschreibung.toString();
-            /* Notiz implementation may seem buggy, but works pretty good and feels somehow faster
-             * than an extra join on the database*/
-        if (beschreibung.startsWith("00NOTIZ::")) {
-            recycleDescriptionViewHolder.cv.setForeground(animationResource);
-            recycleDescriptionViewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-
-                @Override
-                public boolean onLongClick(View view) {
-                    /*Save the Programm state*/
-                    ArrayList<ExpandableTermin> list;
-                    do {
-                        list = dbOpenHelper.getProgramm(context).get(currDay);
-                        if (list == null) {
-                            try {
-                                wait(2);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    } while (list == null);
-                    SharedValues.setProgrammScrollPosition(recycleDescriptionViewHolder.getAdapterPosition() - 2);
-                    SharedValues.toExpand = binarySearch(list, ((ExpandableDescription) o).time, 0, list.size() - 1);
-
-                    Intent myIntent = new Intent(context, NotizenActivity.class);
-                    myIntent.putExtra("title", "Notiz bearbeiten");
-                    myIntent.putExtra("content", beschreibung);
-                    myIntent.putExtra("day", String.valueOf(currDay + 1));
-                    myIntent.putExtra("time", ((ExpandableDescription) o).time);
-                    context.startActivity(myIntent);
-                    return true;
-                }
-            });
-
-            recycleDescriptionViewHolder.cv.setCardBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary));
-            recycleDescriptionViewHolder.desrc.setText(beschreibung.substring(9));
-        } else {
-            recycleDescriptionViewHolder.cv.setForeground(null);
-            recycleDescriptionViewHolder.cv.setCardBackgroundColor(ContextCompat.getColor(context, R.color.colorAccent));
-            recycleDescriptionViewHolder.desrc.setText(beschreibung);
-        }
-    }
-
-
-    private static String binarySearch(List<ExpandableTermin> list, String toSearch, int left, int right) {
-        if (left > right) {
-            return "";
-        }
-        int median = (left + right) / 2;
-        int cmp = compare(list.get(median).time, toSearch);
-        if (cmp == 0) {
-            return list.get(median).name;
-        }
-        if (cmp > 0) {
-            return binarySearch(list, toSearch, left, median - 1);
-        }
-        return binarySearch(list, toSearch, median + 1, right);
-    }
-
-    /*Compare to time representing Stings in formation: HH:MM*/
-    private static int compare(String date1, String date2) {
-        int out = Integer.valueOf(date1.substring(0, 2)) - Integer.valueOf(date2.substring(0, 2));
-        if (out == 0) {
-            out = Integer.valueOf(date1.substring(3, 5)) - Integer.valueOf(date2.substring(3, 5));
-        }
-        return out;
-    }
-
 
 }

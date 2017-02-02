@@ -5,11 +5,11 @@ import java.util.Date;
 
 public class SchedulerObject {
 
-    public final Date start;
-    public final long length;
+    public final Date event; //Date when events starts
+    public final long length; //How many days the event lasts
 
-    public SchedulerObject(Date start, int length) {
-        this.start = start;
+    public SchedulerObject(Date event, int length) {
+        this.event = event;
         this.length = length;
     }
 }

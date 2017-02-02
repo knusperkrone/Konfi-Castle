@@ -1,1 +1,1 @@
-include ':app', ':expandablerecyclerview-2.1.1'
+include ':app', ':expandablerecyclerview-3.0.0-RC1'

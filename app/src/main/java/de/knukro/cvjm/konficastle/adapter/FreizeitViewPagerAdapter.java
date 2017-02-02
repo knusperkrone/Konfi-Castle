@@ -40,8 +40,9 @@ public class FreizeitViewPagerAdapter extends FragmentStatePagerAdapter {
                 return "Frauen";
             case 6:
                 return "Mitarbeiterin(innen)";
+            default:
+                return "Unbekannt";
         }
-        return "Fehler" + (position + 1);
     }
 
 }

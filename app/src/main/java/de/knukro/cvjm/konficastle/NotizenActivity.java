@@ -9,14 +9,18 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bignerdranch.expandablerecyclerview.ExpandableRecyclerAdapter;
+
 import de.knukro.cvjm.konficastle.helper.DbOpenHelper;
+import de.knukro.cvjm.konficastle.structs.ExpandableTermin;
 
 public class NotizenActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText etContent;
     private String time, day, initText;
     private DbOpenHelper dbOpenHelper;
-    private boolean wasExpanded;
+    private int parentPosition;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,10 +39,11 @@ public class NotizenActivity extends AppCompatActivity implements View.OnClickLi
         titleView.setText(title);
         day = values.getStringExtra("day");
         time = values.getStringExtra("time");
-        wasExpanded = values.getBooleanExtra("expandend", false);
+        parentPosition = values.getIntExtra("parent", -1);
+        initText = values.getStringExtra("content");
         if (title.startsWith("Notiz")) {
-            initText = values.getStringExtra("content");
             etContent.setText(initText.substring(9));
+            etContent.setSelection(etContent.getText().toString().length());
         }
         dbOpenHelper = DbOpenHelper.getInstance();
     }
@@ -47,21 +52,32 @@ public class NotizenActivity extends AppCompatActivity implements View.OnClickLi
         String content = etContent.getText().toString();
         if (content.length() > 0) {
             dbOpenHelper.updateNote(this, day, time, initText, content);
+            Toast.makeText(this, getString(R.string.activity_notiz_done_update), Toast.LENGTH_SHORT).show();
+
+            ExpandableRecyclerAdapter adapter = SharedValues.getAdapter();
+            adapter.notifyChildChanged(parentPosition,
+                    ((ExpandableTermin) adapter.getParentList().get(parentPosition)).updateNotiz(initText, content));
             return true;
         } else {
-            Toast.makeText(this, "Willst du die Notiz nicht lieber löschen?", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.activity_notiz_error_update), Toast.LENGTH_SHORT).show();
             return false;
         }
     }
 
-    private boolean deleteNote() {
-        String content = etContent.getText().toString();
-        if (content.length() > 0) {
-            dbOpenHelper.deleteNote(this, day, time, content);
-            Toast.makeText(this, "Notiz gelöscht", Toast.LENGTH_SHORT).show();
+    private void deleteNote() {
+        if (initText != null) { //Init text got stripped from NOTIZ_
+            dbOpenHelper.deleteNote(this, day, time, initText);
+            Toast.makeText(this, getString(R.string.activity_notiz_done_delete), Toast.LENGTH_SHORT).show();
+
+            ExpandableRecyclerAdapter adapter = SharedValues.getAdapter();
+            ExpandableTermin currTermin = ((ExpandableTermin) adapter.getParentList().get(parentPosition));
+            adapter.notifyChildRemoved(parentPosition, currTermin.removeNotiz(initText));
+            if (currTermin.details.isEmpty()) {
+                adapter.notifyParentChanged(parentPosition);
+            }
+        } else {
+            Toast.makeText(this, getString(R.string.activity_notiz_error_delete), Toast.LENGTH_SHORT).show();
         }
-        //Nothing to delete
-        return true;
     }
 
     private boolean saveNote() {
@@ -70,37 +86,38 @@ public class NotizenActivity extends AppCompatActivity implements View.OnClickLi
             try {
                 dbOpenHelper.putNote(this, day, time, content);
             } catch (SQLException e) {
-                Toast.makeText(this, "Oh, ein Fehler! Gibt es die Notiz schon?", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.activity_notiz_error2_save), Toast.LENGTH_SHORT).show();
                 return false;
             }
-            Toast.makeText(this, "Notiz gespeichert!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.activity_notiz_done_save), Toast.LENGTH_SHORT).show();
+
+            ExpandableRecyclerAdapter adapter = SharedValues.getAdapter();
+            ExpandableTermin currTermin = ((ExpandableTermin) adapter.getParentList().get(parentPosition));
+            adapter.notifyChildInserted(parentPosition, currTermin.insertNotiz(content));
+            if (currTermin.details.size() == 1) {
+                adapter.notifyParentChanged(parentPosition);
+            }
+            adapter.expandParent(parentPosition);
             return true;
         } else {
-            Toast.makeText(this, "Eine leere Notiz speichern?", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.activity_notiz_error1_save), Toast.LENGTH_SHORT).show();
         }
         return false;
     }
-
 
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_cancel:
-                if (!wasExpanded) {
-                    SharedValues.toExpand = "";
-                }
                 finish();
                 break;
             case R.id.btn_delete:
-                if (deleteNote()) {
-                    MainActivity.refreshView();
-                    finish();
-                }
+                deleteNote();
+                finish();
                 break;
             case R.id.btn_save:
                 if (initText != null && updateNote() || saveNote()) { //Old or new notice?
-                    MainActivity.refreshView();
                     finish();
                 }
             default:

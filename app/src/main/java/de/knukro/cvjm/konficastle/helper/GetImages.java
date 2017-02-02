@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.widget.ImageView;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -64,7 +65,7 @@ public class GetImages extends AsyncTask<Object, Object, Object> {
     @Override
     protected Object doInBackground(Object... objects) {
         SharedValues.addAsyncTask(this, GetImages.class);
-        String savedImage = ImageStorage.getImagePath(event);
+        String savedImage = ImageStorage.getImagePath(event.eventTitle, context);
         if (savedImage == null) {
             /*Need to check the web*/
             event.imagename = parseImage(event.link);
@@ -82,7 +83,7 @@ public class GetImages extends AsyncTask<Object, Object, Object> {
                     e.printStackTrace();
                 }
             } else {
-                /*The web ist stupid. Save it anyway*/
+                /*The web is stupid. Save the placeholder then!*/
                 bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.onlineplaceholder);
             }
         } else {
@@ -101,15 +102,18 @@ public class GetImages extends AsyncTask<Object, Object, Object> {
     protected void onPostExecute(Object o) {
         SharedValues.removeAsyncTask(this);
         if (success) {
-            ImageStorage.saveToSdCard(bitmap, event);
+            ImageStorage.saveToSdCard(bitmap, event.eventTitle, context);
         }
         try {
             view.setImageBitmap(bitmap);
         } catch (Exception e) {
+            String path = ImageStorage.getImagePath(event.eventTitle, context);
+            if (path != null) {
+                new File(path).delete();
+            }
             bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.onlineplaceholder);
         }
     }
-
 
 }
 

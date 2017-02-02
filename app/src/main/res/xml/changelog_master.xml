@@ -5,8 +5,9 @@
         version="1.5"
         versioncode="11">
         <change>Abwärtskompatibilität verbessert</change>
+        <change>Bilder werden nur noch über W-LAN heruntergeladen</change>
         <change>Ein Fehler, dass Notizen nicht angezeigt werden wurde behoben</change>
-        <change>Die App updatet seine Datenbank nun selbstständig!</change>
+        <change>Die Datenbank nun wird selbstständig aktualisiert!</change>
     </release>
 
     <release

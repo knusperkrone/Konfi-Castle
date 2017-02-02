@@ -12,13 +12,13 @@
         android:layout_height="wrap_content">
 
         <ImageButton
-            android:contentDescription="@string/about_logo"
             android:id="@+id/about_logo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:background="@color/white"
             android:clickable="true"
+            android:contentDescription="@string/activity_about_activity_about_logo"
             android:paddingTop="40dp"
             app:srcCompat="@drawable/cvjm_logo" />
 
@@ -30,7 +30,7 @@
             android:layout_below="@id/about_logo"
             android:layout_centerInParent="true"
             android:padding="10dp"
-            android:text="@string/about_appInfo" />
+            android:text="@string/activity_about_appInfo" />
 
         <TextView
             android:id="@+id/about_mit"
@@ -39,7 +39,7 @@
             android:layout_below="@id/about_info"
             android:layout_centerHorizontal="true"
             android:padding="0dp"
-            android:text="@string/about_participants" />
+            android:text="@string/activity_about_participants" />
 
         <TextView
             android:id="@+id/about_author"
@@ -49,7 +49,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerInParent="true"
             android:padding="10dp"
-            android:text="@string/about_appAuthor" />
+            android:text="@string/activity_about_appAuthor" />
 
         <TextView
             android:id="@+id/about_code"
@@ -58,7 +58,7 @@
             android:layout_below="@id/about_author"
             android:layout_centerHorizontal="true"
             android:padding="10dp"
-            android:text="@string/about_appCode" />
+            android:text="@string/activity_about_appCode" />
 
         <TextView
             android:id="@+id/about_link"
@@ -68,7 +68,7 @@
             android:layout_centerHorizontal="true"
             android:autoLink="web"
             android:linksClickable="true"
-            android:text="@string/about_appLink" />
+            android:text="@string/activity_about_appLink" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -76,7 +76,7 @@
             android:layout_below="@id/about_link"
             android:layout_centerHorizontal="true"
             android:padding="20dp"
-            android:text="@string/about_appVersion" />
+            android:text="@string/activity_about_appVersion" />
 
     </RelativeLayout>
 

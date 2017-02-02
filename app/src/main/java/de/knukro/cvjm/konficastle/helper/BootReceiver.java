@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,8 +26,8 @@ import de.knukro.cvjm.konficastle.structs.SchedulerObject;
 
 public class BootReceiver extends BroadcastReceiver {
 
-    private static AlarmManager aManager;
     private static final int DELAY = 0;
+    private static AlarmManager aManager;
 
     public static void resetNotifications(Context context) {
         AlarmManager aManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
@@ -57,17 +58,16 @@ public class BootReceiver extends BroadcastReceiver {
 
         aManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
-        set = sp.getStringSet(context.getString(R.string.notification_key),
-                new HashSet<>(Arrays.asList(context.getResources().getStringArray(R.array.notification_values))));
+        set = sp.getStringSet(context.getString(R.string.key_notification), new HashSet<>(Arrays.asList(context.getResources().getStringArray(R.array.notification_values))));
 
-        int day = (int) TimeUnit.DAYS.convert(System.currentTimeMillis() - toCheck.start.getTime(), TimeUnit.MILLISECONDS);
+        int day = (int) TimeUnit.DAYS.convert(System.currentTimeMillis() - toCheck.event.getTime(), TimeUnit.MILLISECONDS);
 
         if (day > toCheck.length || set.isEmpty()) {
-            /*It's already gone or no Notitification ar wanted*/
+            /*It's already gone or no Notification are wanted*/
             ((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE)).cancelAll();
         } else {
 
-            int offset = Integer.valueOf(sp.getString(context.getString(R.string.notification_time_key), "5"));
+            int offset = Integer.valueOf(sp.getString(context.getString(R.string.key_notification_time), "5"));
             int notification_id = 1; //minimum notificationID
 
             ArrayList<ArrayList<ExpandableTermin>> query = dbOpenHelper.getProgramm(context);
@@ -80,7 +80,7 @@ public class BootReceiver extends BroadcastReceiver {
                 }
             }
 
-            if (sp.getBoolean(context.getString(R.string.ma_key), false)) { //Visit out guestbook?
+            if (sp.getBoolean(context.getString(R.string.key_ma), false)) { //Visit out guestbook?
                 ExpandableTermin lastTermin = query.get(query.size() - 1).get(query.get(query.size() - 1).size() - 1);
                 scheduleNotification(getSecondOffset(lastTermin.time, toCheck, (int) toCheck.length - 1, -150), "", context, 0);
             }
@@ -88,19 +88,20 @@ public class BootReceiver extends BroadcastReceiver {
     }
 
     private long getSecondOffset(String time, SchedulerObject eventCheck, int day, int offset) {
-        Date event = new Date(eventCheck.start.getTime());
-        //TODO: change to Calendar
-        event.setHours(Integer.valueOf(time.substring(0, 2)));
-        event.setMinutes(Integer.valueOf(time.substring(3)) - offset);
-        event.setDate(event.getDate() + day);
-        return (event.getTime() - Calendar.getInstance().getTime().getTime());
+        Calendar eventTime = Calendar.getInstance();
+        eventTime.setTime(eventCheck.event); //Set on the where the event starts
+        eventTime.add(Calendar.DAY_OF_MONTH, day); //Add the day offset
+        eventTime.set(Calendar.HOUR_OF_DAY, Integer.valueOf(time.substring(0, 2)));
+        eventTime.set(Calendar.MINUTE, Integer.valueOf(time.substring(3)) - offset);
+        eventTime.set(Calendar.MILLISECOND, 0);
+        eventTime.set(Calendar.SECOND, 0);
+        return (eventTime.getTimeInMillis() - Calendar.getInstance().getTimeInMillis());
     }
 
     private void scheduleNotification(long delay, String notiText, Context context, int notification_id) {
         if (delay < 0) {
             return;
         }
-        //Schedule a NotificationService.onHandleIntent()
         Intent i = new Intent(context, NotificationService.class);
         i.putExtra(SharedValues.NOTIFICATION_ID, notification_id);
         i.putExtra(SharedValues.NOTIFICATION_TEXT, notiText); //Saving the text in intent
@@ -117,5 +118,3 @@ public class BootReceiver extends BroadcastReceiver {
     }
 
 }
-
-

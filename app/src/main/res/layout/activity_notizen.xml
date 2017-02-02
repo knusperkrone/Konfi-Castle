@@ -13,60 +13,60 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:orientation="vertical"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:orientation="vertical">
 
         <TextView
+            android:id="@+id/notiz_Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/notiz_Title"
-            android:textSize="18dp"
+            android:maxLines="1"
             android:textColor="@color/colorAccent"
-            android:maxLines="1" />
+            android:textSize="18dp" />
 
         <ScrollView
+            android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:id="@+id/scrollView">
+            android:layout_weight="1">
             <EditText
+                android:id="@+id/etContent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textMultiLine"
+                android:layout_marginTop="10dp"
                 android:ems="10"
-                android:id="@+id/etContent"
-                android:hint="@string/content_hint"
-                android:layout_marginTop="10dp" />
+                android:hint="@string/activity_notiz_content_hint"
+                android:inputType="textMultiLine" />
         </ScrollView>
     </LinearLayout>
 
     <LinearLayout android:id="@+id/buttonRow"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="48dp"
+        android:orientation="horizontal"
         android:weightSum="3">
 
             <Button
+                android:id="@+id/btn_cancel"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                android:text="@string/cancel"
-                android:id="@+id/btn_cancel" />
+                android:text="@string/activity_notiz_button_cancel" />
             <Button
+                android:id="@+id/btn_delete"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                android:text="@string/delete"
-                android:id="@+id/btn_delete" />
+                android:text="@string/activity_notiz_button_delete" />
             <Button
+                android:id="@+id/btn_save"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                android:text="@string/save"
-                android:id="@+id/btn_save"/>
+                android:text="@string/activity_notiz_button_save" />
 
     </LinearLayout>
 

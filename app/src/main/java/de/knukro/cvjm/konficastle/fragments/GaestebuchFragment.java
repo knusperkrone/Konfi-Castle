@@ -16,7 +16,7 @@ import android.widget.TextView;
 import de.knukro.cvjm.konficastle.R;
 import de.knukro.cvjm.konficastle.SharedValues;
 import de.knukro.cvjm.konficastle.helper.AsyncAdapterSet;
-import de.knukro.cvjm.konficastle.structs.Entry;
+import de.knukro.cvjm.konficastle.structs.GaestebuchEintrag;
 import de.knukro.cvjm.konficastle.structs.RegisterSite;
 
 
@@ -79,8 +79,8 @@ public class GaestebuchFragment extends Fragment {
     }
 
     public static class GaestebuchAdapter extends RecyclerView.Adapter<GaestebuchViewHolder> {
-        private final LayoutInflater inflater;
         public final RegisterSite currSite;
+        private final LayoutInflater inflater;
 
         public GaestebuchAdapter(Context context, RegisterSite list) {
             inflater = LayoutInflater.from(context);
@@ -98,7 +98,7 @@ public class GaestebuchFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(GaestebuchViewHolder holder, int position) {
-            Entry currEntry = currSite.entrys.get(position);
+            GaestebuchEintrag currEntry = currSite.entrys.get(position);
             holder.author.setText(currEntry.author);
             holder.text.setText(currEntry.text);
         }

@@ -6,7 +6,6 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,11 +20,11 @@ import de.knukro.cvjm.konficastle.helper.DbOpenHelper;
 public class ProgrammFragment extends Fragment {
 
     private ViewPager viewPager;
-    private Context context;
+
 
     public static void setProgrammTitle(Context context, Toolbar toolbar) {
         String instance = PreferenceManager.getDefaultSharedPreferences(context).getString(
-                context.getString(R.string.instanz_key), "1");
+                context.getString(R.string.key_instanz), "1");
         if (instance.equals("13")) {
             toolbar.setTitle("ÖC");
         } else {
@@ -37,13 +36,12 @@ public class ProgrammFragment extends Fragment {
     public void onPause() {
         super.onPause();
         SharedValues.setCurrProgrammViewPagerPosition(viewPager.getCurrentItem());
-        Log.d("Current item", ""+viewPager.getCurrentItem());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstance) {
         final View rootView = inflater.inflate(R.layout.fragment_inflate_array, container, false);
-        context = getContext();
+        Context context = getContext();
         int currPage = SharedValues.getAndResetCurrProgrammViewPagerPosition();
 
         viewPager = (ViewPager) rootView.findViewById(R.id.inflater_viewpager);

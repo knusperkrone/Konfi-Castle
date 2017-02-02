@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 
 import de.knukro.cvjm.konficastle.R;
 import de.knukro.cvjm.konficastle.adapter.FreizeitenAdapter;
@@ -68,7 +67,6 @@ public class AsyncAdapterSet extends AsyncTask<Void, Void, Object> {
                         }
                     }
                 } catch (Exception e) {
-                    Log.d("nav_angebote", "" +e);
                     e.printStackTrace();
                 }
                 return new FreizeitenAdapter(context, position);
@@ -86,7 +84,6 @@ public class AsyncAdapterSet extends AsyncTask<Void, Void, Object> {
                         adapter.notifyItemInserted(landingPage.entrys.size());
                     }
                 } catch (Exception e) {
-                    Log.d("nav_gaestebuch", "" +e);
                     e.printStackTrace();
                     return null;
                 }

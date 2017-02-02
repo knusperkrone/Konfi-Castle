@@ -33,15 +33,14 @@ import de.knukro.cvjm.konficastle.helper.DbUpdater;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private final FragmentManager fm = getSupportFragmentManager();
     private Toolbar toolbar;
     private DrawerLayout drawer;
     private TabLayout tabLayout;
     private NavigationView navigationView;
-    private final FragmentManager fm = getSupportFragmentManager();
     private Fragment currFragment;
     private Class fragmentClass;
     private int currView = -1;
-    private static boolean update = false;
 
 
     private void showFragment() {
@@ -60,10 +59,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public static void refreshView() {
-        update = true;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,7 +66,7 @@ public class MainActivity extends AppCompatActivity
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            SharedValues.toExpand = extras.getString(SharedValues.TO_EXPAND, "");
+            SharedValues.toExpand = extras.getString(SharedValues.KEY_TO_EXPAND, "");
         }
 
         DbOpenHelper.initInstance(this); //Init DbOpenHelper
@@ -100,31 +95,30 @@ public class MainActivity extends AppCompatActivity
         ((FloatingActionButton) findViewById(R.id.floatingActionButton)).hide();
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        String firstboot = getString(R.string.firstboot);
+        String firstboot = getString(R.string.key_firstboot);
         ChangeLog cl = new ChangeLog(this);
-        if (sp.getBoolean(firstboot, true)) {
+        if (sp.getBoolean(firstboot, true)) { //Check firstboot
             WelcomeDialog welcomeDialog = new WelcomeDialog();
             welcomeDialog.show(fm, "welcome_dialog");
             BootReceiver.resetNotifications(this);
             cl.updateVersionInPreferences(); //Don't show changelog
             sp.edit().putBoolean(firstboot, false).apply();
-        } else if (cl.isFirstRun()) {
+        } else if (cl.isFirstRun()) { //Check update
             cl.getLogDialog().show();
             BootReceiver.resetNotifications(this);
         }
-        new DbUpdater(this).execute();
+        new DbUpdater(this).execute(); //Check Db update
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (currView == -1 || (update && currView == R.id.nav_programm)) {
+        if (currView == -1) {
             ProgrammFragment.setProgrammTitle(this, toolbar);
             currView = R.id.nav_programm;
             navigationView.setCheckedItem(R.id.nav_programm);
             fragmentClass = ProgrammFragment.class;
             showFragment();
-            update = false;
         }
     }
 
@@ -165,20 +159,20 @@ public class MainActivity extends AppCompatActivity
             return true;
         }
 
-
         switch (viewId) {
             case R.id.nav_about:
                 startActivity(new Intent(getApplication(), AboutActivity.class));
+                toolbar.setTitle(getString(R.string.nav_about));
                 break;
 
             case R.id.nav_abendgebet:
                 fragmentClass = AbendgebetFragment.class;
-                toolbar.setTitle("Abendgebet");
+                toolbar.setTitle(getString(R.string.nav_abendgebet));
                 break;
 
             case R.id.nav_angebote:
                 fragmentClass = FreizeitenFragment.class;
-                toolbar.setTitle("Freizeit Angebote");
+                toolbar.setTitle(getString(R.string.nav_angebote));
                 break;
 
             /*case R.id.nav_feedback:
@@ -189,7 +183,7 @@ public class MainActivity extends AppCompatActivity
 
             case R.id.nav_gaestebuch:
                 fragmentClass = GaestebuchFragment.class;
-                toolbar.setTitle("Gästebuch");
+                toolbar.setTitle(getString(R.string.nav_gaestebuch));
                 break;
 
             case R.id.nav_programm:
@@ -199,12 +193,12 @@ public class MainActivity extends AppCompatActivity
 
             case R.id.nav_setting:
                 startActivity(new Intent(getApplication(), SettingsActivity.class));
-                toolbar.setTitle("Einstellungen");
+                toolbar.setTitle(getString(R.string.nav_settings));
                 break;
 
             case R.id.nav_start:
                 fragmentClass = StartInDenTagRecycleFragment.class;
-                toolbar.setTitle("Start in den Tag");
+                toolbar.setTitle(getString(R.string.nav_startInDenTag));
                 break;
         }
 

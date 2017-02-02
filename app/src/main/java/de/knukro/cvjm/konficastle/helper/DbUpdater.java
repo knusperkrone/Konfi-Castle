@@ -6,7 +6,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.widget.Toast;
 
 import java.io.BufferedInputStream;
@@ -22,6 +21,7 @@ import java.net.URLConnection;
 import java.util.List;
 
 import de.knukro.cvjm.konficastle.MainActivity;
+import de.knukro.cvjm.konficastle.R;
 import de.knukro.cvjm.konficastle.structs.DbDescription;
 
 
@@ -92,7 +92,7 @@ public class DbUpdater extends AsyncTask<Void, Void, Void> {
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
         if (success) {
-            Toast.makeText(context, "Datenbank wurde aktualisiert!", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, context.getString(R.string.helper_dbupdater_success), Toast.LENGTH_LONG).show();
             dbOpenHelper.updateDbData(context);
             ((MainActivity) context).onResume();
         }
@@ -124,7 +124,6 @@ public class DbUpdater extends AsyncTask<Void, Void, Void> {
                     sqlAction.append(note.toString());
                 }
                 sqlAction.deleteCharAt(sqlAction.lastIndexOf(","));
-                Log.d("INSERTING", "" + sqlAction);
                 try {
                     SQLiteDatabase mDatabase = SQLiteDatabase.openDatabase(TMPDB_PATH, null, SQLiteDatabase.OPEN_READWRITE);
                     mDatabase.beginTransaction();

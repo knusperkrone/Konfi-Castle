@@ -3,41 +3,41 @@
 
     <SwitchPreference
         android:defaultValue="false"
-        android:key="@string/vibrate_key"
-        android:title="@string/vibrate_title" />
+        android:key="@string/key_vibrate"
+        android:title="@string/activity_settings_vibrate_title" />
 
     <SwitchPreference
         android:defaultValue="false"
-        android:key="@string/spam_key"
-        android:title="@string/spam_title" />
+        android:key="@string/key_spam"
+        android:title="@string/activity_settings_spam_title" />
 
     <ListPreference
         android:defaultValue="5"
         android:entries="@array/notification_time_values"
         android:entryValues="@array/notification_time_values"
-        android:key="@string/notification_time_key"
-        android:title="@string/notification_time_title" />
+        android:key="@string/key_notification_time"
+        android:title="@string/activity_settings_notification_time_title" />
 
 
     <MultiSelectListPreference
         android:defaultValue="@array/notification_values"
         android:entries="@array/notification_entries"
         android:entryValues="@array/notification_values"
-        android:key="@string/notification_key"
-        android:summary="@string/event_summary"
-        android:title="@string/event_title" />
+        android:key="@string/key_notification"
+        android:summary="@string/activity_settings_event_summary"
+        android:title="@string/activity_settings_event_title" />
 
     <ListPreference
         android:defaultValue="1"
         android:entries="@array/castle_entries"
         android:entryValues="@array/castle_values"
-        android:key="@string/instanz_key"
-        android:summary="@string/notification_summary"
-        android:title="@string/notification_title" />
+        android:key="@string/key_instanz"
+        android:summary="@string/activity_settings_notification_summary"
+        android:title="@string/activity_settings_notification_title" />
 
     <Preference
-        android:key="@string/help_key"
-        android:summary="@string/help_summary"
-        android:title="@string/help_title" />
+        android:key="@string/key_help"
+        android:summary="@string/activity_settings_help_summary"
+        android:title="@string/activity_settings_help_title" />
 
 </PreferenceScreen>

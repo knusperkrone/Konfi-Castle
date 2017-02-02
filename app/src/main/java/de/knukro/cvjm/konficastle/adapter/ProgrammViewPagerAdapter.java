@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import java.util.ArrayList;
 
+import de.knukro.cvjm.konficastle.R;
 import de.knukro.cvjm.konficastle.fragments.ProgrammRecycleFragment;
 import de.knukro.cvjm.konficastle.helper.DbOpenHelper;
 import de.knukro.cvjm.konficastle.structs.ExpandableTermin;
@@ -41,6 +42,7 @@ public class ProgrammViewPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return "Tag " + (position + 1);
+        return context.getString(R.string.adapter_programmviewpager_day) + " " + (position + 1);
     }
+
 }

@@ -40,9 +40,9 @@ public class NotificationService extends IntentService {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context);
 
         if (NOTICATION_TIME_KEY == null || VIBRATE_KEY == null || SPAM_KEY == null) {
-            NOTICATION_TIME_KEY = context.getString(R.string.notification_time_key);
-            VIBRATE_KEY = context.getString(R.string.vibrate_key);
-            SPAM_KEY = context.getString(R.string.spam_key);
+            NOTICATION_TIME_KEY = context.getString(R.string.key_notification_time);
+            VIBRATE_KEY = context.getString(R.string.key_vibrate);
+            SPAM_KEY = context.getString(R.string.key_spam);
         }
 
         mBuilder.setSmallIcon(R.drawable.icon)
@@ -54,11 +54,12 @@ public class NotificationService extends IntentService {
             String text = intent.getStringExtra(NOTIFICATION_TEXT);
 
             Intent i = new Intent(context, MainActivity.class);
-            i.putExtra(SharedValues.TO_EXPAND, text);
+            i.putExtra(SharedValues.KEY_TO_EXPAND, text);
             PendingIntent pendingIntent = PendingIntent.getActivity(context, DEFAULT_ID, i, PendingIntent.FLAG_UPDATE_CURRENT);
 
-
-            mBuilder.setContentTitle("Es geht in " + sp.getString(NOTICATION_TIME_KEY, "5") + " Minuten weiter")
+            mBuilder.setContentTitle(getString(R.string.helper_notificationservice_text1)
+                    + sp.getString(NOTICATION_TIME_KEY, "5")
+                    + getString(R.string.helper_notificationservice_text2))
                     .setContentText(text)
                     .setContentIntent(pendingIntent);
 
@@ -79,8 +80,8 @@ public class NotificationService extends IntentService {
             i.setData(Uri.parse("https://www.cvjm-bayern.de/spenden-kontakt/gaestebuch/eintrag-ins-gaestebuch.html"));
             PendingIntent pendingIntent = PendingIntent.getActivity(context, DEFAULT_ID, i, PendingIntent.FLAG_UPDATE_CURRENT);
 
-            mBuilder.setContentTitle("Schreibe einen Gästbucheintrag!")
-                    .setContentText("Teile mit uns wie gut dir die Veranstaltung gefallen hat!")
+            mBuilder.setContentTitle(getString(R.string.helper_notificationservice_guestbooktitle))
+                    .setContentText(getString(R.string.helper_notificationservice_guestbooktext))
                     .setContentIntent(pendingIntent);
 
             ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE))

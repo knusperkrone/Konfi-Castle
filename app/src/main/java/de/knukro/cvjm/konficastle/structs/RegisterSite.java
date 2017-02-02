@@ -6,7 +6,7 @@ import java.util.List;
 
 public class RegisterSite {
     public final String nextSite;
-    public final List<Entry> entrys;
+    public final List<GaestebuchEintrag> entrys;
 
     public RegisterSite(String nextSite) {
         this.nextSite = "https://www.cvjm-bayern.de/" + nextSite;

@@ -14,10 +14,10 @@
         android:layout_marginEnd="5dp"
         android:layout_marginStart="5dp"
         android:layout_marginTop="2dp"
-        app:cardBackgroundColor="@color/colorAccent"
-        app:cardElevation="2.5dp"
         android:clickable="true"
         android:foreground="?android:attr/selectableItemBackground"
+        app:cardBackgroundColor="@color/colorAccent"
+        app:cardElevation="2.5dp"
         card_view:cardCornerRadius="10dp">
 
         <RelativeLayout
@@ -31,8 +31,8 @@
                 android:layout_alignParentTop="true"
                 android:layout_centerVertical="true"
                 android:adjustViewBounds="true"
-                android:scaleType="fitXY"
-                android:contentDescription="@string/freizeit_descr" />
+                android:contentDescription="@string/fragment_freizeit_descr"
+                android:scaleType="fitXY" />
 
             <TextView
                 android:id="@+id/element_freizeit_datum"

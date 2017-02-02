@@ -19,7 +19,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import de.knukro.cvjm.konficastle.MainActivity;
 import de.knukro.cvjm.konficastle.R;
 import de.knukro.cvjm.konficastle.structs.DbDescription;
 import de.knukro.cvjm.konficastle.structs.ExpandableDescription;
@@ -31,15 +30,7 @@ import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
 public class DbOpenHelper extends SQLiteOpenHelper {
 
-    private static DbOpenHelper instance;
-
     private static final String DB_NAME = "KonfiCastle.db";
-    private static String DB_PATH;
-    private final SharedPreferences sp;
-    private SQLiteDatabase mDatabase;
-    private SchedulerObject programDate;
-    private ArrayList<ArrayList<ExpandableTermin>> programList = null;
-
     private static final String queryDate =
             "SELECT Startdatum, Dauer\n" +
                     "from Veranstaltung\n" +
@@ -61,6 +52,13 @@ public class DbOpenHelper extends SQLiteOpenHelper {
 
     private static final String queryNotes = "SELECT * FROM Beschreibung WHERE TerminBeschreibung LIKE \"00NOTIZ::%\"";
 
+    private static DbOpenHelper instance;
+    private static String DB_PATH;
+    private final SharedPreferences sp;
+    private SQLiteDatabase mDatabase;
+    private SchedulerObject programDate;
+    private ArrayList<ArrayList<ExpandableTermin>> programList = null;
+
 
     private DbOpenHelper(Context context) {
         super(context, DB_NAME, null, 1);
@@ -73,7 +71,7 @@ public class DbOpenHelper extends SQLiteOpenHelper {
         if (checkUpgraded(context) || !new File(DB_PATH).exists()) {
             getReadableDatabase(); // Somehow necessary
             if (!copyDatabase(context)) {
-                Toast.makeText(context, "Oh, ein Fehler mit der Datenbank. Starte die App neu!"
+                Toast.makeText(context, context.getString(R.string.helper_dbopenhelper_dberror)
                         , Toast.LENGTH_SHORT).show();
             }
         }
@@ -111,7 +109,6 @@ public class DbOpenHelper extends SQLiteOpenHelper {
         return false;
     }
 
-
     private boolean copyDatabase(Context context) {
         try {
             InputStream inputStream = context.getAssets().open(DB_NAME);
@@ -148,7 +145,6 @@ public class DbOpenHelper extends SQLiteOpenHelper {
     public void updateDbData(Context mContext) {
         updateDate(mContext);
         updateProgramm(mContext);
-        MainActivity.refreshView();
     }
 
     public SchedulerObject getDate(Context mContext) {
@@ -167,8 +163,8 @@ public class DbOpenHelper extends SQLiteOpenHelper {
     private void updateDate(Context mContext) {
         openDatabase();
         Cursor cursor = mDatabase.rawQuery(queryDate, new String[]{
-                sp.getString(mContext.getString(R.string.instanz_key), "1"),
-                sp.getString(mContext.getString(R.string.event_key), "KC")
+                sp.getString(mContext.getString(R.string.key_instanz), "1"),
+                sp.getString(mContext.getString(R.string.key_event), "KC")
         });
 
         cursor.moveToFirst();
@@ -187,7 +183,7 @@ public class DbOpenHelper extends SQLiteOpenHelper {
 
     /*Necessary through a database design flaw*/
     private String unescape(String description) {
-        return description.replaceAll("\\\\n", "\\\n");
+        return description;
     }
 
     private void updateProgramm(Context mContext) {
@@ -195,12 +191,13 @@ public class DbOpenHelper extends SQLiteOpenHelper {
         ExpandableTermin currTermin;
         ArrayList<ExpandableTermin> listDay = new ArrayList<>();
 
-        boolean ma = sp.getBoolean(mContext.getString(R.string.ma_key), false);
+        boolean ma = sp.getBoolean(mContext.getString(R.string.key_ma), false);
         int index = 1;
         openDatabase();
         Cursor cursor = mDatabase.rawQuery(queryProgramm, new String[]{
-                sp.getString(mContext.getString(R.string.instanz_key), "1"),
-                sp.getString(mContext.getString(R.string.event_key), "KC")
+                sp.getString(mContext.getString(R.string.key_instanz), "1"),
+                sp.getString(mContext.getString(R.string.key_event), "KC")
+                //Locale.getDefault().toString().startsWith("de") ? "de" : "en"
         });
 
         cursor.moveToFirst();
@@ -212,8 +209,7 @@ public class DbOpenHelper extends SQLiteOpenHelper {
                 if (ma) {
                     /*We are allowed to see everything*/
                     do {
-                        currTermin.details.add(new ExpandableDescription(unescape(cursor.getString(3)),
-                                cursor.getString(0)));
+                        currTermin.details.add(new ExpandableDescription(cursor.getString(3).replaceAll("\\\\n", "\\\n"), cursor.getString(0)));
                         cursor.moveToNext();
                     } while (!cursor.isAfterLast() && cursor.getString(0).equals(currTermin.time));
                 } else {
@@ -222,7 +218,7 @@ public class DbOpenHelper extends SQLiteOpenHelper {
                         if (cursor.getString(3).startsWith("00NOTIZ::")) {
                             currTermin.details.add(new ExpandableDescription(unescape(cursor.getString(3)),
                                     cursor.getString(0)));
-                        } else { //No more notes
+                        } else { //Rest is hidden
                             while (!cursor.isAfterLast() && cursor.getString(0).equals(currTermin.time)) {
                                 cursor.moveToNext();
                             }
@@ -278,7 +274,7 @@ public class DbOpenHelper extends SQLiteOpenHelper {
     public void deleteNote(Context context, String day, String time, String content) {
         String id_Instanz;
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        id_Instanz = sp.getString(context.getString(R.string.instanz_key), "1");
+        id_Instanz = sp.getString(context.getString(R.string.key_instanz), "1");
 
         makeDbAction("DELETE FROM Beschreibung WHERE Id_Instanz == \"" + id_Instanz + "\" AND Tag_Termin == \"" + day + "\" AND Uhrzeit_Termin ==\"" + time + "\" AND TerminBeschreibung LIKE \"%" + content + "\"", context);
     }
@@ -286,7 +282,7 @@ public class DbOpenHelper extends SQLiteOpenHelper {
     public void updateNote(Context context, String day, String time, String origContent, String newContent) {
         String id_Instanz;
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        id_Instanz = sp.getString(context.getString(R.string.instanz_key), "1");
+        id_Instanz = sp.getString(context.getString(R.string.key_instanz), "1");
 
         makeDbAction("UPDATE Beschreibung SET TerminBeschreibung = \"00NOTIZ::" + newContent + "\" WHERE Id_Instanz == \"" + id_Instanz + "\" AND Tag_Termin == \"" + day + "\" AND Uhrzeit_Termin ==\"" + time + "\" AND TerminBeschreibung LIKE \"%" + origContent + "\"", context);
     }
@@ -294,7 +290,7 @@ public class DbOpenHelper extends SQLiteOpenHelper {
     public void putNote(Context context, String day, String time, String content) {
         String id_Instanz;
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        id_Instanz = sp.getString(context.getString(R.string.instanz_key), "1");
+        id_Instanz = sp.getString(context.getString(R.string.key_instanz), "1");
 
         makeDbAction("INSERT INTO Beschreibung VALUES (\"" + id_Instanz + "\",\"" + day + "\",\"" + time + "\",\"00NOTIZ::" + content + "\")", context);
     }

@@ -4,11 +4,12 @@ package de.knukro.cvjm.konficastle.structs;
 public class ExpandableDescription /* extends ChildListItem */ {
 
     public final String time; //Necessary to update/delete own notices
-    public final CharSequence beschreibung;
+    public CharSequence description;
 
-    public ExpandableDescription(CharSequence s1, String time) {
-        beschreibung = s1;
+    public ExpandableDescription(CharSequence description, String time) {
+        this.description = description;
         this.time = time;
     }
+
 
 }

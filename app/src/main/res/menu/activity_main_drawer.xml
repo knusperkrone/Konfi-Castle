@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single" android:id="@+id/functionality">
+    <group
+        android:id="@+id/functionality"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_start"
-            android:title="@string/nav_start_in_den_Tag"
+            android:title="@string/nav_startInDenTag"
             android:titleCondensed="StartInDenTag" />
         <item
             android:id="@+id/nav_programm"
@@ -16,7 +18,9 @@
     </group>
 
 
-    <group android:checkableBehavior="single" android:id="@+id/charity">
+    <group
+        android:id="@+id/charity"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_angebote"
             android:title="@string/nav_angebote"
@@ -27,7 +31,9 @@
     </group>
 
 
-    <group android:checkableBehavior="single" android:id="@+id/settings">
+    <group
+        android:id="@+id/settings"
+        android:checkableBehavior="single">
        <!-- <item
             android:id="@+id/nav_feedback"
             android:title="@string/nav_feedback" />-->

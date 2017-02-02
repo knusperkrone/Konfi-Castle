@@ -21,8 +21,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import de.knukro.cvjm.konficastle.R;
-
 
 
 /*
@@ -65,29 +63,24 @@ import de.knukro.cvjm.konficastle.R;
 @SuppressWarnings( {"UnusedDeclaration", "WeakerAccess"})
 public class ChangeLog {
     /**
-     * Tag that is used when sending error/debug messages to the log.
-     */
-    protected static final String LOG_TAG = "ckChangeLog";
-
-    /**
-     * This is the key used when storing the version code in SharedPreferences.
-     */
-    protected static final String VERSION_KEY = "ckChangeLog_last_version_code";
-
-    /**
-     * Constant that used when no version code is available.
-     */
-    protected static final int NO_VERSION = -1;
-
-    /**
      * Default CSS styles used to format the change log.
      */
     public static final String DEFAULT_CSS =
             "h1 { margin-left: 0px; font-size: 1.2em; }" + "\n" +
                     "li { margin-left: 0px; }" + "\n" +
                     "ul { padding-left: 2em; }";
-
-
+    /**
+     * Tag that is used when sending error/debug messages to the log.
+     */
+    protected static final String LOG_TAG = "ckChangeLog";
+    /**
+     * This is the key used when storing the version code in SharedPreferences.
+     */
+    protected static final String VERSION_KEY = "ckChangeLog_last_version_code";
+    /**
+     * Constant that used when no version code is available.
+     */
+    protected static final int NO_VERSION = -1;
     /**
      * Context that is used to access the resources and to create the ChangeLog dialogs.
      */
@@ -113,29 +106,6 @@ public class ChangeLog {
      */
     private String mCurrentVersionName;
 
-
-    /**
-     * Contains constants for the root element of {@code changelog.xml}.
-     */
-    protected interface ChangeLogTag {
-        static final String NAME = "changelog";
-    }
-
-    /**
-     * Contains constants for the release element of {@code changelog.xml}.
-     */
-    protected interface ReleaseTag {
-        static final String NAME = "release";
-        static final String ATTRIBUTE_VERSION = "version";
-        static final String ATTRIBUTE_VERSION_CODE = "versioncode";
-    }
-
-    /**
-     * Contains constants for the change element of {@code changelog.xml}.
-     */
-    protected interface ChangeTag {
-        static final String NAME = "change";
-    }
 
     /**
      * Create a {@code ChangeLog} instance using the default {@link SharedPreferences} file.
@@ -574,6 +544,29 @@ public class ChangeLog {
                 }
             }
         };
+    }
+
+    /**
+     * Contains constants for the root element of {@code changelog.xml}.
+     */
+    protected interface ChangeLogTag {
+        static final String NAME = "changelog";
+    }
+
+    /**
+     * Contains constants for the release element of {@code changelog.xml}.
+     */
+    protected interface ReleaseTag {
+        static final String NAME = "release";
+        static final String ATTRIBUTE_VERSION = "version";
+        static final String ATTRIBUTE_VERSION_CODE = "versioncode";
+    }
+
+    /**
+     * Contains constants for the change element of {@code changelog.xml}.
+     */
+    protected interface ChangeTag {
+        static final String NAME = "change";
     }
 
     /**

@@ -33,12 +33,12 @@ public class AboutActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (check-- == 0) {
                     String message;
-                    if (!preferences.getBoolean(getString(R.string.ma_key), false)) {
-                        message = "Glückwunsch!";
-                        preferences.edit().putBoolean(getString(R.string.ma_key), true).apply();
+                    if (!preferences.getBoolean(getString(R.string.key_ma), false)) {
+                        message = getString(R.string.activity_about_ma_pos);
+                        preferences.edit().putBoolean(getString(R.string.key_ma), true).apply();
                     } else {
-                        message = "Nicht so übermütig!";
-                        preferences.edit().putBoolean(getString(R.string.ma_key), false).apply();
+                        message = getString(R.string.activity_about_ma_neg);
+                        preferences.edit().putBoolean(getString(R.string.key_ma), false).apply();
                     }
                     Toast.makeText(AboutActivity.this, message, Toast.LENGTH_SHORT).show();
 

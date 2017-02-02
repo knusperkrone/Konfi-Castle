@@ -1,12 +1,13 @@
 package de.knukro.cvjm.konficastle.structs;
 
-import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
+
+import com.bignerdranch.expandablerecyclerview.model.Parent;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class ArrayParentStruct implements ParentListItem {
+public class ArrayParentStruct implements Parent<ExpandableDescription> {
 
     public final CharSequence title;
     public final List<ExpandableDescription> texts;
@@ -17,7 +18,7 @@ public class ArrayParentStruct implements ParentListItem {
     }
 
     @Override
-    public List<?> getChildItemList() {
+    public List<ExpandableDescription> getChildList() {
         return texts;
     }
 

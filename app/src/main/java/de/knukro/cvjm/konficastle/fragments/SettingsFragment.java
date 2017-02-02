@@ -13,7 +13,15 @@ import de.knukro.cvjm.konficastle.dialogs.WelcomeDialog;
 import de.knukro.cvjm.konficastle.helper.BootReceiver;
 import de.knukro.cvjm.konficastle.helper.DbOpenHelper;
 
-import static de.knukro.cvjm.konficastle.R.string.help_key;
+import static de.knukro.cvjm.konficastle.R.string.activity_settings_spam_summary_neg;
+import static de.knukro.cvjm.konficastle.R.string.activity_settings_spam_summary_pos;
+import static de.knukro.cvjm.konficastle.R.string.activity_settings_vibrate_summary_neg;
+import static de.knukro.cvjm.konficastle.R.string.activity_settings_vibrate_summary_pos;
+import static de.knukro.cvjm.konficastle.R.string.key_help;
+import static de.knukro.cvjm.konficastle.R.string.key_instanz;
+import static de.knukro.cvjm.konficastle.R.string.key_notification_time;
+import static de.knukro.cvjm.konficastle.R.string.key_spam;
+import static de.knukro.cvjm.konficastle.R.string.key_vibrate;
 
 public class SettingsFragment extends PreferenceFragment
         implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -30,7 +38,7 @@ public class SettingsFragment extends PreferenceFragment
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
         getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
-        Preference helpButton = findPreference(getString(help_key));
+        Preference helpButton = findPreference(getString(key_help));
         helpButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -41,20 +49,20 @@ public class SettingsFragment extends PreferenceFragment
 
         dbOpenHelper = DbOpenHelper.getInstance();
 
-        VIBRATE_KEY = getString(R.string.vibrate_key);
-        HELP_KEY = getString(help_key);
-        INSTANZ_KEY = getString(R.string.instanz_key);
-        SPAM_KEY = getString(R.string.spam_key);
-        NOTFICATIONTIME_KEY = getString(R.string.notification_time_key);
+        VIBRATE_KEY = getString(key_vibrate);
+        HELP_KEY = getString(key_help);
+        INSTANZ_KEY = getString(key_instanz);
+        SPAM_KEY = getString(key_spam);
+        NOTFICATIONTIME_KEY = getString(key_notification_time);
 
         sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
         VIRBRATE_VALUE = sp.getBoolean(VIBRATE_KEY, false);
         SPAM_VALUE = sp.getBoolean(SPAM_KEY, false);
 
-        vibrateButton = findPreference(getString(R.string.vibrate_key));
-        spamButton = findPreference(getString(R.string.spam_key));
-        notficationTimeButton = findPreference(getString(R.string.notification_time_key));
-        instanzButton = findPreference(getString(R.string.instanz_key));
+        vibrateButton = findPreference(getString(key_vibrate));
+        spamButton = findPreference(getString(key_spam));
+        notficationTimeButton = findPreference(getString(key_notification_time));
+        instanzButton = findPreference(getString(key_instanz));
 
         specialAction(INSTANZ_KEY);
         specialAction(VIBRATE_KEY);
@@ -82,20 +90,22 @@ public class SettingsFragment extends PreferenceFragment
 
     private void specialAction(String key) {
         if (key.equals(VIBRATE_KEY)) {
-            vibrateButton.setSummary((VIRBRATE_VALUE) ? R.string.vibrate_summary_pos : R.string.vibrate_summary_neg);
+            vibrateButton.setSummary((VIRBRATE_VALUE) ? activity_settings_vibrate_summary_pos : activity_settings_vibrate_summary_neg);
             VIRBRATE_VALUE = !VIRBRATE_VALUE;
         } else if (key.equals(SPAM_KEY)) {
-            spamButton.setSummary((!SPAM_VALUE) ? R.string.spam_summary_pos : R.string.spam_summary_neg);
+            spamButton.setSummary((!SPAM_VALUE) ? activity_settings_spam_summary_pos : activity_settings_spam_summary_neg);
             SPAM_VALUE = !SPAM_VALUE;
         } else if (key.equals(INSTANZ_KEY)) {
-            String instance = sp.getString(getString(R.string.instanz_key), "1");
+            String instance = sp.getString(getString(key_instanz), "1");
             if (instance.equals("13")) {
-                instanzButton.setSummary("Du bist auf dem ÖC");
+                instanzButton.setSummary(getString(R.string.fragment_settings_titleOC));
             } else {
-                instanzButton.setSummary("Du bist auf dem Konfi Castle " + instance);
+                instanzButton.setSummary(getString(R.string.fragment_settings_titleKC) + " " + instance);
             }
         } else if (key.equals(NOTFICATIONTIME_KEY)) {
-            notficationTimeButton.setSummary("Du bekommst " + sp.getString(getString(R.string.notification_time_key), "5") + " Minuten vorher Bescheid");
+            notficationTimeButton.setSummary(getString(R.string.fragment_settings_notification1) + " " +
+                    sp.getString(getString(key_notification_time), "5") + " " +
+                    getString(R.string.fragment_settings_notification2));
         }
     }
 
