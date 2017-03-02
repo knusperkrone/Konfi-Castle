@@ -21,8 +21,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="8dp"
-        android:paddingEnd="1dp"
-        android:paddingStart="5dp"
+        android:paddingRight="1dp"
+        android:paddingLeft="5dp"
         android:paddingTop="8dp">
 
 
@@ -31,8 +31,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginStart="6dp"
-            android:textColor="@color/Black"
+            android:layout_marginLeft="6dp"
+            android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -41,8 +41,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginStart="8dp"
-            android:layout_toEndOf="@+id/rec_time"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@+id/rec_time"
             android:textColor="@color/text"
             android:textSize="18sp" />
 

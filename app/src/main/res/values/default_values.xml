@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="db_version" translatable="false">3</integer>
+
+    <bool name="default_setting_noti_vibration">false</bool>
+    <bool name="default_setting_noti_spam">true</bool>
+
+    <integer name="default_setting_noti_delay">5</integer>
+    <string name="default_setting_noti_delay">5</string>
+    <integer name="default_setting_event">5</integer>
+
+</resources>

@@ -1,4 +1,4 @@
-package de.knukro.cvjm.konficastle.dialogs;
+package de.knukro.cvjm.konficastle.ui;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;

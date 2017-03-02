@@ -1,4 +1,4 @@
-package de.knukro.cvjm.konficastle;
+package de.knukro.cvjm.konficastle.helper;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import de.knukro.cvjm.konficastle.R;
 
 
 
@@ -297,7 +299,7 @@ public class ChangeLog {
     /**
      * Write current version code to the preferences.
      */
-    protected void updateVersionInPreferences() {
+    public void updateVersionInPreferences() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(mContext);
         SharedPreferences.Editor editor = sp.edit();
         editor.putInt(VERSION_KEY, mCurrentVersionCode);

@@ -1,4 +1,4 @@
-package de.knukro.cvjm.konficastle.adapter;
+package de.knukro.cvjm.konficastle.ui;
 
 import android.support.v4.view.ViewPager;
 import android.view.View;
